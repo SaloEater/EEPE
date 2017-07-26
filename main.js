@@ -1,5 +1,6 @@
 ﻿var isFirstTimeHandChecked = false;
-
+var GUI;
+var PhStoneButtonState=0;
 IDRegistry.genItemID("PhilosopherStone");
 Item.createItem("PhilosopherStone", "Философский камень", {
     name: "PhilosopherStone",
@@ -76,38 +77,21 @@ Item.registerUseFunction("PhilosopherStone", function(coords, item, block) {
     }
 });
 
-var UIbuttons = {
-    container: null,
-    Window: new UI.Window({
-        location: {
-            x: 50,
-            y: UI.getScreenHeight() / 2,
-            width: 100,
-            height: 100
-        },
-        drawing: [{
-            type: "background",
-            color: 0
-        }],
-        elements: {}
-    }),
-    enableButton: function(name) {
-        this.isEnabled = true;
-        buttonMap[name] = true;
+var PhStoneButtons = new UI.StandartWindow({
+    location: {
+            x: 0,
+            y: 0,
+            width: 50,
+            height: 50
     },
-    disableButton: function(name) {
-        buttonMap[name] = false;
-    }
-}
-
-var buttonMap = {
-    buttonCraftingTable: false,
-    buttonShoot: false
-}
-
-function updateUIbuttons() {
-    var buttonContent = {
-        buttonCraftingTable: {
+    drawing: [
+        {
+            type: "background", color: 0
+        }
+    ],
+    elements: {
+        "button": {
+            x: 0,
             y: 0,
             type: "button",
             bitmap: "buttonCraftOff",
@@ -115,36 +99,60 @@ function updateUIbuttons() {
             scale: 50,
             clicker: {
                 onClick: function() {
-                    Game.message("Открыл верстак");
+                    ModAPI.requireGlobal("WorkbenchPocketStyle.openUI()");
                 }
             }
         }
     }
-    var elements = UIbuttons.Window.content.elements;
-    for (var name in buttonMap) {
-        if (buttonMap[name]) {
-            if (!elements[name]) {
-                elements[name] = buttonContent[name];
-                elements[name].x = 0;
+});
+
+var anotherPhStoneButtons=null;
+
+function PhStoneButtonsController(type){
+    if(type==1){
+        var ctx = UI.getMcContext();
+        var screensize = ModAPI.requireGlobal("GuiUtils.GetDisplaySize()");
+        UI.run(function(){
+            var layout = new android.widget.LinearLayout(ctx);
+                layout.setOrientation(1);
+                var directory = new android.graphics.Bitmap.createScaledBitmap(new android.graphics.BitmapFactory.decodeFile("/sdcard/windows/BstSharedFolder/EEPE/gui/buttonCraftOff.png"), 50, 50, true);
+                var img = new android.graphics.drawable.BitmapDrawable(directory);
+                var image = new android.widget.ImageView(ctx);
+                image.setImageBitmap(directory);
+                image.setOnClickListener(new android.view.View.OnClickListener({
+                    onClick: function(viewarg) {
+                        Game.message("Open table");
+                        ModAPI.requireGlobal("WorkbenchPocketStyle.openUI()");
+                    }
+                }));
+                layout.addView(image);
+                GUI = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+                GUI.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.RED));
+                GUI.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.TOP, 100, 100);
+            });
+    } else {
+        UI.run(function(){
+            if(GUI!=null){
+                GUI.dismiss();
+                GUI=null;
             }
-        } else {
-            elements[name] = null;
-        }
+        });
     }
 }
 
 Callback.addCallback("tick", function() {
     if (Player.getCarriedItem().id == ItemID.PhilosopherStone && !isFirstTimeHandChecked) {
+        //anotherPhStoneButtons=PhStoneButtons;
         Game.message("Open GUI");
-        UIbuttons.enableButton("buttonCraftingTable");
-        updateUIbuttons();
-        UIbuttons.container = new UI.Container();
-        UIbuttons.container.openAs(UIbuttons.Window);
+        PhStoneButtonsController(1);
+        //UI.openUI(PhStoneButtons);
         isFirstTimeHandChecked = true;
     } else if (Player.getCarriedItem().id != ItemID.PhilosopherStone && isFirstTimeHandChecked) {
         Game.message("Close GUI");
-        UIbuttons.disableButton("buttonCraftingTable");
-        UIbuttons.container = null;
+        //anotherPhStoneButtons.content.elements["button"]=null;
+        //anotherPhStoneButtons=null
+        //UI.WindowProvider.removeWindow(PhStoneButtons);
+        PhStoneButtonsController(2);
         isFirstTimeHandChecked = false;
     }
 });
