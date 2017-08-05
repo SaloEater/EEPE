@@ -189,7 +189,7 @@ var collectorRecipes={
 		resultdata: 0
 	},
 	2890: {
-		value: 64,
+		value: 192,
 		resultid: 348,
 		resultdata: 0
 	}
@@ -669,13 +669,13 @@ TileEntity.registerPrototype(BlockID.TransmutationTable, {
                 tTGuiFirstUpdate = false;
                 updateAvailableItems(this.container);
             }
-            if (!addedValue && this.container.getSlot("burnSlot").id > 0) {
+            if (!addedValue && this.container.getSlot("burnSlot").id != 0) {
                 var emcValue = getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data);
                 this.container.setText("addValue", emcValue == -1 ? "Нельзя сжечь" : "+ " + emcValue * this.container.getSlot("burnSlot").count);
                 //this.container.setFont("addValue", emcValue == -1 ? android.graphics.Color.BLACK : android.graphics.Color.rgb(0x51, 0x204, 0x255));
                 addedValue = true;
-            } else if (addedValue && this.container.getSlot("burnSlot").id < 1) {
-                this.container.getGuiContent().elements["addValue"] = null;
+            } else if (addedValue && this.container.getSlot("burnSlot").id == 0) {
+				this.container.setText("addValue", "");
                 addedValue = false;
             }
         }
@@ -745,7 +745,7 @@ TileEntity.registerPrototype(BlockID.energyCondenser, {
                         this.data.itemInSlotId = mainSlot.id;
                         this.data.itemInSlotData = mainSlot.data;
                         this.data.itemInSlotValue = localEMC;
-                        Game.dialogMessage(this.data.itemInSlotId + ":" + this.data.itemInSlotData + ":" + this.data.itemInSlotValue);
+                        //Game.dialogMessage(this.data.itemInSlotId + ":" + this.data.itemInSlotData + ":" + this.data.itemInSlotValue);
                     }
                 }
             } else {
@@ -1363,10 +1363,26 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
 		maxEnergy: 100000,
 		sunTick: 1,
 		shallMove: 0,
-		needEnergy: 0
+		needEnergy: 0,
+		validTarget: 0,
+		validID: 0,
+		validData: 0,
+		shallTransfer: 0,
+		placeToTransfer: {x:0, y:0, z:0}
     },
     created: function() {
-
+		this.data.activeSunEnergy= 0;
+		this.data.activeEnergy= 0;
+		this.data.maxEnergy= 100000;
+		this.data.sunTick= 1;
+		this.data.shallMove= 0;
+		this.data.needEnergy= 0;
+		this.data.validTarget= 0;
+		this.data.validID= 0;
+		this.data.validData= 0;
+		this.data.shallTransfer=0;
+		this.data.placeToTransfer= {x:0, y:0, z:0}
+		Game.message("Created");
     },
     click: function(id, count, data, coords) {
 
@@ -1374,88 +1390,170 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
     getTransportSlots: function() {
         
     },
-    tick: function() {
-		if (World.getThreadTime() % 4 == 0){
-			if(1==1){
-				this.container.setScale("lightLevel", 1);
-				this.data.sunTick=32;
-			} else {
-				this.container.setScale("lightLevel", 0);
-				this.data.sunTick=0;
+	init: function(){
+		Game.message("Init");
+		if(this.data.shallTransfer==0){
+			if(World.getBlockID(this.x+1, this.y, this.z)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x+1, this.y, this.z) && World.getTileEntity(this.x+1, this.y, this.z).data.shallTransfer==0){
+				this.data.placeToTransfer.x=this.x+1;
+				this.data.placeToTransfer.y=this.y; 
+				this.data.placeToTransfer.z=this.z;
+				this.data.shallTransfer=1;
+			} else if(World.getBlockID(this.x-1, this.y, this.z)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x-1, this.y, this.z) && World.getTileEntity(this.x-1, this.y, this.z).data.shallTransfer==0){
+				this.data.placeToTransfer.x=this.x-1;
+				this.data.placeToTransfer.y=this.y; 
+				this.data.placeToTransfer.z=this.z;
+				this.data.shallTransfer=1;
+				World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y+1, this.data.placeToTransfer.z, 1);
+			} else if(World.getBlockID(this.x, this.y, this.z+1)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z+1) && World.getTileEntity(this.x, this.y, this.z+1).data.shallTransfer==0){
+				this.data.placeToTransfer.x=this.x;
+				this.data.placeToTransfer.y=this.y; 
+				this.data.placeToTransfer.z=this.z+1;
+				this.data.shallTransfer=1;
+			} else if(World.getBlockID(this.x, this.y, this.z-1)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z-1) && World.getTileEntity(this.x, this.y, this.z-1).data.shallTransfer==0){
+				this.data.placeToTransfer.x=this.x;
+				this.data.placeToTransfer.y=this.y; 
+				this.data.placeToTransfer.z=this.z-1;
+				this.data.shallTransfer=1;
+			}else if(World.getBlockID(this.x, this.y-1, this.z)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y-1, this.z) && World.getTileEntity(this.x, this.y-1, this.z).data.shallTransfer==0){
+				this.data.placeToTransfer.x=this.x;
+				this.data.placeToTransfer.y=this.y-1; 
+				this.data.placeToTransfer.z=this.z;
+				this.data.shallTransfer=1;
 			}
-			if(collectorRecipes[this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data]!=undefined){
-				Game.message(this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data);
-				var burnValue = collectorRecipes[this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data].value;
-				this.data.needEnergy=burnValue;
-				if(this.data.activeSunEnergy>=burnValue){
-					if (this.container.getSlot("afterBurnSlot").id == 0) {
-						this.container.getSlot("afterBurnSlot").id=collectorRecipes[this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data].resultid;
-						this.container.getSlot("afterBurnSlot").data=collectorRecipes[this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data].resultdata;
-						this.container.getSlot("afterBurnSlot").count=1;
-						this.container.getSlot("burnSlot").count--;
-						this.container.validateSlot("burnSlot");
-						this.data.activeSunEnergy-=burnValue;
-					} else if (this.container.getSlot("afterBurnSlot").count == 64 
-								|| this.container.getSlot("afterBurnSlot").id!=collectorRecipes[this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data].resultid 
-								|| this.container.getSlot("afterBurnSlot").data!=collectorRecipes[this.container.getSlot("burnSlot").id+""+this.container.getSlot("burnSlot").data].resultdata) {
-						this.data.shallMove=1;
+		}
+	},
+    tick: function() {
+		var mainContainer = this.container;
+		if (World.getThreadTime() % 4 == 0){
+			if(nativeGetLightLevel(this.x, this.y + 1, this.z) >= 14){
+				mainContainer.setScale("lightLevel", 1);
+				this.data.sunTick=1;
+			} else {
+				mainContainer.setScale("lightLevel", 0);
+				this.data.sunTick=0;
+			}		
+			if(this.data.shallTransfer==0){
+				if(this.data.activeSunEnergy<this.data.maxEnergy)this.data.activeSunEnergy+=this.data.sunTick;
+				if(collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data]!=undefined){
+					if(this.data.validTarget==0){
+						var burnValue = collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].value;
+						this.data.needEnergy=burnValue;
+						if(this.data.activeSunEnergy>=burnValue){
+							if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+								mainContainer.getSlot("afterBurnSlot").id=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultid;
+								mainContainer.getSlot("afterBurnSlot").data=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultdata;
+								mainContainer.getSlot("afterBurnSlot").count=1;
+								mainContainer.getSlot("burnSlot").count--;
+								mainContainer.validateSlot("burnSlot");
+								this.data.activeSunEnergy-=burnValue;
+							} else if (mainContainer.getSlot("afterBurnSlot").count == 64 
+										|| mainContainer.getSlot("afterBurnSlot").id!=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultid 
+										|| mainContainer.getSlot("afterBurnSlot").data!=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultdata) {
+								this.data.shallMove=1;
+							} else {
+								mainContainer.getSlot("afterBurnSlot").count++;
+								mainContainer.getSlot("burnSlot").count--;
+								mainContainer.validateSlot("burnSlot");
+								this.data.activeSunEnergy-=burnValue;
+							}
+						}
 					} else {
-						this.container.getSlot("afterBurnSlot").count++;
-						this.container.getSlot("burnSlot").count--;
-						this.container.validateSlot("burnSlot");
-						this.data.activeSunEnergy-=burnValue;
+						//var burnValue = collectorRecipes[mainContainer.getSlot("targetSlot").id+""+mainContainer.getSlot("targetSlot").data].value;
+						//this.data.needEnergy = burnValue;
+						if(collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data]!=undefined && collectorRecipes[this.data.validID+""+this.data.validData]!=undefined){
+							if(this.data.activeSunEnergy>=this.data.needEnergy){
+								if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+									mainContainer.getSlot("afterBurnSlot").id=collectorRecipes[this.data.validID+""+this.data.validData].resultid;
+									mainContainer.getSlot("afterBurnSlot").data=collectorRecipes[this.data.validID+""+this.data.validData].resultdata;
+									mainContainer.getSlot("afterBurnSlot").count=1;
+									mainContainer.getSlot("burnSlot").count--;
+									mainContainer.validateSlot("burnSlot");
+									this.data.activeSunEnergy-=this.data.needEnergy;
+								} else if (mainContainer.getSlot("afterBurnSlot").count == 64 
+											|| mainContainer.getSlot("afterBurnSlot").id!=collectorRecipes[this.data.validID+""+this.data.validData].resultid 
+											|| mainContainer.getSlot("afterBurnSlot").data!=collectorRecipes[this.data.validID+""+this.data.validData].resultdata) {
+									this.data.shallMove=1;
+								} else {
+									mainContainer.getSlot("afterBurnSlot").count++;
+									mainContainer.getSlot("burnSlot").count--;
+									mainContainer.validateSlot("burnSlot");
+									this.data.activeSunEnergy-=this.data.needEnergy;
+								}
+							}
+						}
 					}
+				} else {
+					//this.data.needEnergy=0;
+				}
+				if(this.data.shallMove==1){
+					for(i=1; i<9; i++){
+						if(mainContainer.getSlot("slot"+i).id==mainContainer.getSlot("afterBurnSlot").id&&mainContainer.getSlot("slot"+i).data==mainContainer.getSlot("afterBurnSlot").data&&mainContainer.getSlot("slot"+i)<64){
+							if(mainContainer.getSlot("slot"+i).count+mainContainer.getSlot("afterBurnSlot").count<=64){
+								mainContainer.getSlot("slot"+i).count+=mainContainer.getSlot("afterBurnSlot").count;
+							} else {
+								mainContainer.getSlot("afterBurnSlot").count-=(64-mainContainer.getSlot("afterBurnSlot").count);
+								mainContainer.getSlot("slot"+i).count+=(64-mainContainer.getSlot("afterBurnSlot").count);
+							}
+						} else if(mainContainer.getSlot("slot"+i).id==0){
+							mainContainer.getSlot("slot"+i).id=mainContainer.getSlot("afterBurnSlot").id;
+							mainContainer.getSlot("slot"+i).data=mainContainer.getSlot("afterBurnSlot").data;
+							mainContainer.getSlot("slot"+i).count=mainContainer.getSlot("afterBurnSlot").count;
+							mainContainer.clearSlot("afterBurnSlot");
+							mainContainer.validateSlot("slot"+i);
+							break;
+						}
+					}
+					mainContainer.validateSlot("afterBurnSlot");
+					this.data.shallMove=0;
 				}
 			} else {
-				this.data.needEnergy=0;
+				var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+				if(center)center.data.activeSunEnergy+=this.data.sunTick;
 			}
-			if(this.data.shallMove==1){
-				for(i=1; i<9; i++){
-					if(this.container.getSlot("slot"+i).id==this.container.getSlot("afterBurnSlot").id&&this.container.getSlot("slot"+i).data==this.container.getSlot("afterBurnSlot").data&&this.container.getSlot("slot"+i)<64){
-						if(this.container.getSlot("slot"+i).count+this.container.getSlot("afterBurnSlot").count<=64){
-							this.container.getSlot("slot"+i).count+=this.container.getSlot("afterBurnSlot").count;
-						} else {
-							this.container.getSlot("afterBurnSlot").count-=(64-this.container.getSlot("afterBurnSlot").count);
-							this.container.getSlot("slot"+i).count+=(64-this.container.getSlot("afterBurnSlot").count);
+			mainContainer.setScale("sunEnergy", this.data.activeSunEnergy/this.data.maxEnergy);
+			mainContainer.setText("sunEnergyValue", this.data.activeSunEnergy);
+			mainContainer.setScale("energy", this.data.activeEnergy/this.data.maxEnergy);
+			mainContainer.setText("energyValue", this.data.needEnergy);
+			mainContainer.setScale("burnScale",  this.data.needEnergy==0?0:this.data.activeSunEnergy/this.data.needEnergy);
+		} else if(World.getThreadTime() % 21 == 0){
+			for(i=8; i>0; i--){
+				if(mainContainer.getSlot("slot"+i).id==0){
+					for(j=i-1; j>0; j--){
+						if(mainContainer.getSlot("slot"+j).id!=0){
+							mainContainer.getSlot("slot"+i).id=mainContainer.getSlot("slot"+j).id;
+							mainContainer.getSlot("slot"+i).data=mainContainer.getSlot("slot"+j).data;
+							mainContainer.getSlot("slot"+i).count=mainContainer.getSlot("slot"+j).count;
+							mainContainer.clearSlot("slot"+j);
 						}
-					} else if(this.container.getSlot("slot"+i).id==0){
-						this.container.getSlot("slot"+i).id=this.container.getSlot("afterBurnSlot").id;
-						this.container.getSlot("slot"+i).data=this.container.getSlot("afterBurnSlot").data;
-						this.container.getSlot("slot"+i).count=this.container.getSlot("afterBurnSlot").count;
-						this.container.clearSlot("afterBurnSlot");
-						this.container.validateSlot("slot"+i);
+					}
+				}
+			}
+			if(mainContainer.getSlot("burnSlot").id==0 && mainContainer.getSlot("slot8").id!=0&&collectorRecipes[mainContainer.getSlot("slot8").id+""+mainContainer.getSlot("slot8").data]!=undefined){
+				mainContainer.getSlot("burnSlot").id=mainContainer.getSlot("slot8").id;
+				mainContainer.getSlot("burnSlot").data=mainContainer.getSlot("slot8").data;
+				mainContainer.getSlot("burnSlot").count=mainContainer.getSlot("slot8").count;
+				mainContainer.clearSlot("slot8");
+			}
+			if(mainContainer.getSlot("targetSlot").id!=0 && mainContainer.getSlot("burnSlot").id!=0){
+				for(name in collectorRecipes){
+					if(mainContainer.getSlot("targetSlot").id==collectorRecipes[name].resultid&&mainContainer.getSlot("targetSlot").data==collectorRecipes[name].resultdata){
+						for(name2 in collectorRecipes){
+							if(collectorRecipes[name2].value>=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].value)this.data.needEnergy+=collectorRecipes[name2].value;
+						}
+						this.data.validID=parseInt(name/1000);
+						this.data.validData=parseInt(name%1000);
+						this.data.validTarget=1;
 						break;
 					}
+					this.data.validTarget=0;
+					this.data.needEnergy=0;
 				}
-				this.container.validateSlot("afterBurnSlot");
-				this.data.shallMove=0;
+			} else if(mainContainer.getSlot("targetSlot").id==0){
+				this.data.validTarget=0;
 			}
-			this.data.activeSunEnergy+=this.data.sunTick;
-			this.container.setScale("sunEnergy", this.data.activeSunEnergy/	this.data.maxEnergy);
-			this.container.setText("sunEnergyValue", this.data.activeSunEnergy);
-			this.container.setScale("energy", this.data.activeEnergy/this.data.maxEnergy);
-			this.container.setText("energyValue", 0);
-			this.container.setScale("burnScale", this.data.needEnergy==0?0:this.data.activeEnergy/this.data.needEnergy);
-		} else if(World.getThreadTime() % 21 == 0){
-			Game.message("Trying move");
-			for(i=8; i>0; i--){
-				if(this.container.getSlot("slot"+i).id==0){
-					for(j=i-1; j>0; j--){
-						if(this.container.getSlot("slot"+j).id!=0){
-							this.container.getSlot("slot"+i).id=this.container.getSlot("slot"+j).id;
-							this.container.getSlot("slot"+i).data=this.container.getSlot("slot"+j).data;
-							this.container.getSlot("slot"+i).count=this.container.getSlot("slot"+j).count;
-							this.container.clearSlot("slot"+j);
-						}
-					}
-				}
-			}
-			Game.message(this.container.getSlot("burnSlot").id);
-			if(this.container.getSlot("burnSlot").id==0){
-				this.container.getSlot("burnSlot").id=this.container.getSlot("slot8").id;
-				this.container.getSlot("burnSlot").data=this.container.getSlot("slot8").data;
-				this.container.getSlot("burnSlot").count=this.container.getSlot("slot8").count;
-				this.container.clearSlot("slot8");
+			if(this.data.shallTransfer==1&&this.data.placeToTransfer!=undefined&&World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"])!=BlockID.energyCollectorTier1){
+				//Game.message("All broken: "+this.data.shallTransfer+", "+JSON.stringify(this.data.placeToTransfer)+", "+World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"])+":"+BlockID.energyCollectorTier1);
+				this.data.shallTransfer=0;
 			}
 		}
     },
@@ -1504,7 +1602,7 @@ energyCollectorUI.setContent({
         },
 		"burnScale": {
 			type: "scale",
-			x: 839, 
+			x: 835, 
 			y: 165,
 			direction: 1,
 			bitmap: "collectorProcess",
