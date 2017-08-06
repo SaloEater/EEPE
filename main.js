@@ -172,27 +172,27 @@ var EMCForItems = [{
         value: 1
     }
 ];
-var collectorRecipes={
-	2631: {
-		value: 32,
-		resultid: 331,
-		resultdata: 0
-	},
-	3310: {
-		value: 64,
-		resultid: 263,
-		resultdata: 0
-	},
-	2630: {
-		value: 64,
-		resultid: 289,
-		resultdata: 0
-	},
-	2890: {
-		value: 192,
-		resultid: 348,
-		resultdata: 0
-	}
+var collectorRecipes = {
+    2631: {
+        value: 32,
+        resultid: 331,
+        resultdata: 0
+    },
+    3310: {
+        value: 64,
+        resultid: 263,
+        resultdata: 0
+    },
+    2630: {
+        value: 64,
+        resultid: 289,
+        resultdata: 0
+    },
+    2890: {
+        value: 192,
+        resultid: 348,
+        resultdata: 0
+    }
 };
 
 IDRegistry.genItemID("PhilosopherStone");
@@ -279,7 +279,7 @@ Item.registerUseFunction("PhilosopherStone", function(coords, item, block) {
     }
 });
 
-function PhStoneButtonsController(type) {
+function backpackButtons(type) {
     if (type == 1) {
         var ctx = UI.getMcContext();
         Game.message(screensize[0] + ":" + screensize[1]);
@@ -335,11 +335,11 @@ function PhStoneButtonsController(type) {
 Callback.addCallback("tick", function() {
     if (Player.getCarriedItem().id == ItemID.PhilosopherStone && !isFirstTimeHandChecked) {
         Game.message("Open GUI");
-        PhStoneButtonsController(1);
+        backpackButtons(1);
         isFirstTimeHandChecked = true;
     } else if (Player.getCarriedItem().id != ItemID.PhilosopherStone && isFirstTimeHandChecked) {
         Game.message("Close GUI");
-        PhStoneButtonsController(2);
+        backpackButtons(2);
         isFirstTimeHandChecked = false;
     }
 });
@@ -433,14 +433,6 @@ TransmutationTableUI.setContent({
                             EMCInSystem += emcValue * burnSlot.count;
                             container.clearSlot("burnSlot");
                             container.setText("EMCValue", "ЕМС в системе:" + EMCInSystem);
-                            /*.getGuiContent().elements["EMCValue"] = {
-                                                                    type: "text",
-                                                                    x: 365,
-                                                                    y: 53,
-                                                                    width: 300,
-                                                                    height: 50,
-                                                                    text: "ЕМС в системе:" + EMCInSystem
-                                                                };*/
                         }
                     } catch (e) {
                         if (e !== breakException) throw e;
@@ -523,14 +515,6 @@ function updateAvailableItems(anotherContainer) {
                                 onClick: function(container, tileEntity) {
                                     if (activeItemCount > 1) activeItemCount--;
                                     container.setText("currentAmountForItem", "Выбрано: " + activeItemCount);
-                                    /*.getGuiContent().elements["currentAmountForItem"] = {
-                                                                            type: "text",
-                                                                            x: this.rect.x - 239 + 59.5,
-                                                                            y: this.rect.y + 25,
-                                                                            width: 183.6,
-                                                                            heigth: 35,
-                                                                            text: "Выбрано: " + activeItemCount
-                                                                        };*/
                                 }
                             }
                         };
@@ -564,14 +548,6 @@ function updateAvailableItems(anotherContainer) {
                                 onClick: function(container, tileEntity) {
                                     if (activeItemCount < maxActiveItemCount) activeItemCount++;
                                     container.setText("currentAmountForItem", "Выбрано: " + activeItemCount);
-                                    /*.getGuiContent().elements["currentAmountForItem"] = {
-                                                                            type: "text",
-                                                                            x: this.rect.x - 239 + 59.5,
-                                                                            y: this.rect.y + 25,
-                                                                            width: 183.6,
-                                                                            heigth: 35,
-                                                                            text: "Выбрано: " + activeItemCount
-                                                                        };*/
                                 }
                             }
                         };
@@ -588,14 +564,6 @@ function updateAvailableItems(anotherContainer) {
                                     EMCInSystem -= activeItemCount * emcValue;
                                     Player.getInventory().addItem(localId, activeItemCount, localData);
                                     container.setText("EMCValue", "ЕМС в системе:" + EMCInSystem);
-                                    /*.getGuiContent().elements["EMCValue"] = {
-                                                                            type: "text",
-                                                                            x: 365,
-                                                                            y: 53,
-                                                                            width: 300,
-                                                                            height: 50,
-                                                                            text: "ЕМС в системе:" + EMCInSystem
-                                                                        };*/
                                     for (name in container.getGuiContent().elements) {
                                         if (name.indexOf("slotOn") >= 0) {
                                             container.getGuiContent().elements[name] = null;
@@ -617,14 +585,6 @@ function updateAvailableItems(anotherContainer) {
                                 onClick: function(container, tileEntity) {
                                     activeItemCount = maxActiveItemCount;
                                     container.setText("currentAmountForItem", "Выбрано: " + activeItemCount);
-                                    /*getGuiContent().elements["currentAmountForItem"] = {
-                                                                            type: "text",
-                                                                            x: 426,
-                                                                            y: this.rect.y + 25,
-                                                                            width: 183.6,
-                                                                            heigth: 35,
-                                                                            text: "Выбрано: " + activeItemCount
-                                                                        };*/
                                 }
                             }
                         };
@@ -675,7 +635,7 @@ TileEntity.registerPrototype(BlockID.TransmutationTable, {
                 //this.container.setFont("addValue", emcValue == -1 ? android.graphics.Color.BLACK : android.graphics.Color.rgb(0x51, 0x204, 0x255));
                 addedValue = true;
             } else if (addedValue && this.container.getSlot("burnSlot").id == 0) {
-				this.container.setText("addValue", "");
+                this.container.setText("addValue", "");
                 addedValue = false;
             }
         }
@@ -1358,213 +1318,212 @@ Block.createBlock("energyCollectorTier1", [{
 
 TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
     defaultvalues: {
-		activeSunEnergy: 0,
-		activeEnergy: 0,
-		maxEnergy: 100000,
-		sunTick: 1,
-		shallMove: 0,
-		needEnergy: 0,
-		validTarget: 0,
-		validID: 0,
-		validData: 0,
-		shallTransfer: 0,
-		placeToTransfer: {x:0, y:0, z:0}
+        activeSunEnergy: 0,
+        activeEnergy: 0,
+        maxEnergy: 100000,
+        sunTick: 1,
+        shallMove: 0,
+        needEnergy: 0,
+        validTarget: 0,
+        validID: 0,
+        validData: 0,
+        shallTransfer: 0,
+        placeToTransfer: {
+            x: 0,
+            y: 0,
+            z: 0
+        }
     },
     created: function() {
-		this.data.activeSunEnergy= 0;
-		this.data.activeEnergy= 0;
-		this.data.maxEnergy= 100000;
-		this.data.sunTick= 1;
-		this.data.shallMove= 0;
-		this.data.needEnergy= 0;
-		this.data.validTarget= 0;
-		this.data.validID= 0;
-		this.data.validData= 0;
-		this.data.shallTransfer=0;
-		this.data.placeToTransfer= {x:0, y:0, z:0}
-		Game.message("Created");
+        this.data.activeSunEnergy = 0;
+        this.data.activeEnergy = 0;
+        this.data.maxEnergy = 100000;
+        this.data.sunTick = 1;
+        this.data.shallMove = 0;
+        this.data.needEnergy = 0;
+        this.data.validTarget = 0;
+        this.data.validID = 0;
+        this.data.validData = 0;
+        this.data.shallTransfer = 0;
+        this.data.placeToTransfer = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+        Game.message("Created");
     },
     click: function(id, count, data, coords) {
 
     },
     getTransportSlots: function() {
-        
+
     },
-	init: function(){
-		Game.message("Init");
-		if(this.data.shallTransfer==0){
-			if(World.getBlockID(this.x+1, this.y, this.z)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x+1, this.y, this.z) && World.getTileEntity(this.x+1, this.y, this.z).data.shallTransfer==0){
-				this.data.placeToTransfer.x=this.x+1;
-				this.data.placeToTransfer.y=this.y; 
-				this.data.placeToTransfer.z=this.z;
-				this.data.shallTransfer=1;
-			} else if(World.getBlockID(this.x-1, this.y, this.z)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x-1, this.y, this.z) && World.getTileEntity(this.x-1, this.y, this.z).data.shallTransfer==0){
-				this.data.placeToTransfer.x=this.x-1;
-				this.data.placeToTransfer.y=this.y; 
-				this.data.placeToTransfer.z=this.z;
-				this.data.shallTransfer=1;
-				World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y+1, this.data.placeToTransfer.z, 1);
-			} else if(World.getBlockID(this.x, this.y, this.z+1)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z+1) && World.getTileEntity(this.x, this.y, this.z+1).data.shallTransfer==0){
-				this.data.placeToTransfer.x=this.x;
-				this.data.placeToTransfer.y=this.y; 
-				this.data.placeToTransfer.z=this.z+1;
-				this.data.shallTransfer=1;
-			} else if(World.getBlockID(this.x, this.y, this.z-1)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z-1) && World.getTileEntity(this.x, this.y, this.z-1).data.shallTransfer==0){
-				this.data.placeToTransfer.x=this.x;
-				this.data.placeToTransfer.y=this.y; 
-				this.data.placeToTransfer.z=this.z-1;
-				this.data.shallTransfer=1;
-			}else if(World.getBlockID(this.x, this.y-1, this.z)==BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y-1, this.z) && World.getTileEntity(this.x, this.y-1, this.z).data.shallTransfer==0){
-				this.data.placeToTransfer.x=this.x;
-				this.data.placeToTransfer.y=this.y-1; 
-				this.data.placeToTransfer.z=this.z;
-				this.data.shallTransfer=1;
-			}
-		}
-	},
+    init: function() {
+        Game.message("Init");
+        if (this.data.shallTransfer == 0) {
+            if ((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1  || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3 )&& World.getTileEntity(this.x + 1, this.y, this.z) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x + 1;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x - 1, this.y, this.z) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x - 1;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+                World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y + 1, this.data.placeToTransfer.z, 1);
+            } else if (World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z + 1) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z + 1;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z - 1) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z - 1;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y - 1, this.z) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y - 1;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+            }
+        }
+    },
     tick: function() {
-		var mainContainer = this.container;
-		if (World.getThreadTime() % 4 == 0){
-			if(nativeGetLightLevel(this.x, this.y + 1, this.z) >= 14){
-				mainContainer.setScale("lightLevel", 1);
-				this.data.sunTick=1;
-			} else {
-				mainContainer.setScale("lightLevel", 0);
-				this.data.sunTick=0;
-			}		
-			if(this.data.shallTransfer==0){
-				if(this.data.activeSunEnergy<this.data.maxEnergy)this.data.activeSunEnergy+=this.data.sunTick;
-				if(collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data]!=undefined){
-					if(this.data.validTarget==0){
-						var burnValue = collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].value;
-						this.data.needEnergy=burnValue;
-						if(this.data.activeSunEnergy>=burnValue){
-							if (mainContainer.getSlot("afterBurnSlot").id == 0) {
-								mainContainer.getSlot("afterBurnSlot").id=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultid;
-								mainContainer.getSlot("afterBurnSlot").data=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultdata;
-								mainContainer.getSlot("afterBurnSlot").count=1;
-								mainContainer.getSlot("burnSlot").count--;
-								mainContainer.validateSlot("burnSlot");
-								this.data.activeSunEnergy-=burnValue;
-							} else if (mainContainer.getSlot("afterBurnSlot").count == 64 
-										|| mainContainer.getSlot("afterBurnSlot").id!=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultid 
-										|| mainContainer.getSlot("afterBurnSlot").data!=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].resultdata) {
-								this.data.shallMove=1;
-							} else {
-								mainContainer.getSlot("afterBurnSlot").count++;
-								mainContainer.getSlot("burnSlot").count--;
-								mainContainer.validateSlot("burnSlot");
-								this.data.activeSunEnergy-=burnValue;
-							}
-						}
-					} else {
-						//var burnValue = collectorRecipes[mainContainer.getSlot("targetSlot").id+""+mainContainer.getSlot("targetSlot").data].value;
-						//this.data.needEnergy = burnValue;
-						if(collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data]!=undefined && collectorRecipes[this.data.validID+""+this.data.validData]!=undefined){
-							if(this.data.activeSunEnergy>=this.data.needEnergy){
-								if (mainContainer.getSlot("afterBurnSlot").id == 0) {
-									mainContainer.getSlot("afterBurnSlot").id=collectorRecipes[this.data.validID+""+this.data.validData].resultid;
-									mainContainer.getSlot("afterBurnSlot").data=collectorRecipes[this.data.validID+""+this.data.validData].resultdata;
-									mainContainer.getSlot("afterBurnSlot").count=1;
-									mainContainer.getSlot("burnSlot").count--;
-									mainContainer.validateSlot("burnSlot");
-									this.data.activeSunEnergy-=this.data.needEnergy;
-								} else if (mainContainer.getSlot("afterBurnSlot").count == 64 
-											|| mainContainer.getSlot("afterBurnSlot").id!=collectorRecipes[this.data.validID+""+this.data.validData].resultid 
-											|| mainContainer.getSlot("afterBurnSlot").data!=collectorRecipes[this.data.validID+""+this.data.validData].resultdata) {
-									this.data.shallMove=1;
-								} else {
-									mainContainer.getSlot("afterBurnSlot").count++;
-									mainContainer.getSlot("burnSlot").count--;
-									mainContainer.validateSlot("burnSlot");
-									this.data.activeSunEnergy-=this.data.needEnergy;
-								}
-							}
-						}
-					}
-				} else {
-					//this.data.needEnergy=0;
-				}
-				if(this.data.shallMove==1){
-					for(i=1; i<9; i++){
-						if(mainContainer.getSlot("slot"+i).id==mainContainer.getSlot("afterBurnSlot").id&&mainContainer.getSlot("slot"+i).data==mainContainer.getSlot("afterBurnSlot").data&&mainContainer.getSlot("slot"+i)<64){
-							if(mainContainer.getSlot("slot"+i).count+mainContainer.getSlot("afterBurnSlot").count<=64){
-								mainContainer.getSlot("slot"+i).count+=mainContainer.getSlot("afterBurnSlot").count;
-							} else {
-								mainContainer.getSlot("afterBurnSlot").count-=(64-mainContainer.getSlot("afterBurnSlot").count);
-								mainContainer.getSlot("slot"+i).count+=(64-mainContainer.getSlot("afterBurnSlot").count);
-							}
-						} else if(mainContainer.getSlot("slot"+i).id==0){
-							mainContainer.getSlot("slot"+i).id=mainContainer.getSlot("afterBurnSlot").id;
-							mainContainer.getSlot("slot"+i).data=mainContainer.getSlot("afterBurnSlot").data;
-							mainContainer.getSlot("slot"+i).count=mainContainer.getSlot("afterBurnSlot").count;
-							mainContainer.clearSlot("afterBurnSlot");
-							mainContainer.validateSlot("slot"+i);
-							break;
-						}
-					}
-					mainContainer.validateSlot("afterBurnSlot");
-					this.data.shallMove=0;
-				}
-			} else {
-				var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
-				if(center)center.data.activeSunEnergy+=this.data.sunTick;
-			}
-			mainContainer.setScale("sunEnergy", this.data.activeSunEnergy/this.data.maxEnergy);
-			mainContainer.setText("sunEnergyValue", this.data.activeSunEnergy);
-			mainContainer.setScale("energy", this.data.activeEnergy/this.data.maxEnergy);
-			mainContainer.setText("energyValue", this.data.needEnergy);
-			mainContainer.setScale("burnScale",  this.data.needEnergy==0?0:this.data.activeSunEnergy/this.data.needEnergy);
-		} else if(World.getThreadTime() % 21 == 0){
-			for(i=8; i>0; i--){
-				if(mainContainer.getSlot("slot"+i).id==0){
-					for(j=i-1; j>0; j--){
-						if(mainContainer.getSlot("slot"+j).id!=0){
-							mainContainer.getSlot("slot"+i).id=mainContainer.getSlot("slot"+j).id;
-							mainContainer.getSlot("slot"+i).data=mainContainer.getSlot("slot"+j).data;
-							mainContainer.getSlot("slot"+i).count=mainContainer.getSlot("slot"+j).count;
-							mainContainer.clearSlot("slot"+j);
-						}
-					}
-				}
-			}
-			if(mainContainer.getSlot("burnSlot").id==0 && mainContainer.getSlot("slot8").id!=0&&collectorRecipes[mainContainer.getSlot("slot8").id+""+mainContainer.getSlot("slot8").data]!=undefined){
-				mainContainer.getSlot("burnSlot").id=mainContainer.getSlot("slot8").id;
-				mainContainer.getSlot("burnSlot").data=mainContainer.getSlot("slot8").data;
-				mainContainer.getSlot("burnSlot").count=mainContainer.getSlot("slot8").count;
-				mainContainer.clearSlot("slot8");
-			}
-			if(mainContainer.getSlot("targetSlot").id!=0 && mainContainer.getSlot("burnSlot").id!=0){
-				for(name in collectorRecipes){
-					if(mainContainer.getSlot("targetSlot").id==collectorRecipes[name].resultid&&mainContainer.getSlot("targetSlot").data==collectorRecipes[name].resultdata){
-						for(name2 in collectorRecipes){
-							if(collectorRecipes[name2].value>=collectorRecipes[mainContainer.getSlot("burnSlot").id+""+mainContainer.getSlot("burnSlot").data].value)this.data.needEnergy+=collectorRecipes[name2].value;
-						}
-						this.data.validID=parseInt(name/1000);
-						this.data.validData=parseInt(name%1000);
-						this.data.validTarget=1;
-						break;
-					}
-					this.data.validTarget=0;
-					this.data.needEnergy=0;
-				}
-			} else if(mainContainer.getSlot("targetSlot").id==0){
-				this.data.validTarget=0;
-			}
-			if(this.data.shallTransfer==1&&this.data.placeToTransfer!=undefined&&World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"])!=BlockID.energyCollectorTier1){
-				//Game.message("All broken: "+this.data.shallTransfer+", "+JSON.stringify(this.data.placeToTransfer)+", "+World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"])+":"+BlockID.energyCollectorTier1);
-				this.data.shallTransfer=0;
-			}
-		}
+        var mainContainer = this.container;
+        if (World.getThreadTime() % 4 == 0) {
+			this.data.sunTick=nativeGetLightLevel(this.x, this.y + 1, this.z)/15;
+            if (this.data.shallTransfer == 0) {
+                if (this.data.activeSunEnergy < this.data.maxEnergy) this.data.activeSunEnergy += this.data.sunTick;
+                if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined) {
+                    if (this.data.validTarget == 0) {
+                        var burnValue = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value;
+                        this.data.needEnergy = burnValue;
+                        if (this.data.activeSunEnergy >= burnValue) {
+                            if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+                                mainContainer.getSlot("afterBurnSlot").id = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultid;
+                                mainContainer.getSlot("afterBurnSlot").data = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultdata;
+                                mainContainer.getSlot("afterBurnSlot").count = 1;
+                                mainContainer.getSlot("burnSlot").count--;
+                                mainContainer.validateSlot("burnSlot");
+                                this.data.activeSunEnergy -= burnValue;
+                            } else if (mainContainer.getSlot("afterBurnSlot").count == 64 ||
+                                mainContainer.getSlot("afterBurnSlot").id != collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultid ||
+                                mainContainer.getSlot("afterBurnSlot").data != collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultdata) {
+                                this.data.shallMove = 1;
+                            } else {
+                                mainContainer.getSlot("afterBurnSlot").count++;
+                                mainContainer.getSlot("burnSlot").count--;
+                                mainContainer.validateSlot("burnSlot");
+                                this.data.activeSunEnergy -= burnValue;
+                            }
+                        }
+                    } else {
+                        //var burnValue = collectorRecipes[mainContainer.getSlot("targetSlot").id+""+mainContainer.getSlot("targetSlot").data].value;
+                        //this.data.needEnergy = burnValue;
+                        if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined && collectorRecipes[this.data.validID + "" + this.data.validData] != undefined) {
+                            if (this.data.activeSunEnergy >= this.data.needEnergy) {
+                                if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+                                    mainContainer.getSlot("afterBurnSlot").id = collectorRecipes[this.data.validID + "" + this.data.validData].resultid;
+                                    mainContainer.getSlot("afterBurnSlot").data = collectorRecipes[this.data.validID + "" + this.data.validData].resultdata;
+                                    mainContainer.getSlot("afterBurnSlot").count = 1;
+                                    mainContainer.getSlot("burnSlot").count--;
+                                    mainContainer.validateSlot("burnSlot");
+                                    this.data.activeSunEnergy -= this.data.needEnergy;
+                                } else if (mainContainer.getSlot("afterBurnSlot").count == 64 ||
+                                    mainContainer.getSlot("afterBurnSlot").id != collectorRecipes[this.data.validID + "" + this.data.validData].resultid ||
+                                    mainContainer.getSlot("afterBurnSlot").data != collectorRecipes[this.data.validID + "" + this.data.validData].resultdata) {
+                                    this.data.shallMove = 1;
+                                } else {
+                                    mainContainer.getSlot("afterBurnSlot").count++;
+                                    mainContainer.getSlot("burnSlot").count--;
+                                    mainContainer.validateSlot("burnSlot");
+                                    this.data.activeSunEnergy -= this.data.needEnergy;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (this.data.shallMove == 1) {
+                    for (i = 1; i < 9; i++) {
+                        if (mainContainer.getSlot("slot" + i).id == mainContainer.getSlot("afterBurnSlot").id && mainContainer.getSlot("slot" + i).data == mainContainer.getSlot("afterBurnSlot").data && mainContainer.getSlot("slot" + i) < 64) {
+                            if (mainContainer.getSlot("slot" + i).count + mainContainer.getSlot("afterBurnSlot").count <= 64) {
+                                mainContainer.getSlot("slot" + i).count += mainContainer.getSlot("afterBurnSlot").count;
+                            } else {
+                                mainContainer.getSlot("afterBurnSlot").count -= (64 - mainContainer.getSlot("afterBurnSlot").count);
+                                mainContainer.getSlot("slot" + i).count += (64 - mainContainer.getSlot("afterBurnSlot").count);
+                            }
+                        } else if (mainContainer.getSlot("slot" + i).id == 0) {
+                            mainContainer.getSlot("slot" + i).id = mainContainer.getSlot("afterBurnSlot").id;
+                            mainContainer.getSlot("slot" + i).data = mainContainer.getSlot("afterBurnSlot").data;
+                            mainContainer.getSlot("slot" + i).count = mainContainer.getSlot("afterBurnSlot").count;
+                            mainContainer.clearSlot("afterBurnSlot");
+                            mainContainer.validateSlot("slot" + i);
+                            break;
+                        }
+                    }
+                    mainContainer.validateSlot("afterBurnSlot");
+                    this.data.shallMove = 0;
+                }
+            } else {
+                var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+                if (center&&center.data.activeSunEnergy<center.data.maxEnergy) center.data.activeSunEnergy += this.data.sunTick;
+            }
+            mainContainer.setScale("sunEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
+            mainContainer.setText("sunEnergyValue", parseInt(this.data.activeSunEnergy));
+            mainContainer.setScale("energy", this.data.activeEnergy / this.data.maxEnergy);
+            mainContainer.setText("energyValue", parseInt(this.data.needEnergy));
+            mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeSunEnergy / this.data.needEnergy);
+        } else if (World.getThreadTime() % 21 == 0) {
+            for (i = 8; i > 0; i--) {
+                if (mainContainer.getSlot("slot" + i).id == 0) {
+                    for (j = i - 1; j > 0; j--) {
+                        if (mainContainer.getSlot("slot" + j).id != 0) {
+                            mainContainer.getSlot("slot" + i).id = mainContainer.getSlot("slot" + j).id;
+                            mainContainer.getSlot("slot" + i).data = mainContainer.getSlot("slot" + j).data;
+                            mainContainer.getSlot("slot" + i).count = mainContainer.getSlot("slot" + j).count;
+                            mainContainer.clearSlot("slot" + j);
+                        }
+                    }
+                }
+            }
+            if (mainContainer.getSlot("burnSlot").id == 0 && mainContainer.getSlot("slot8").id != 0 && collectorRecipes[mainContainer.getSlot("slot8").id + "" + mainContainer.getSlot("slot8").data] != undefined) {
+                mainContainer.getSlot("burnSlot").id = mainContainer.getSlot("slot8").id;
+                mainContainer.getSlot("burnSlot").data = mainContainer.getSlot("slot8").data;
+                mainContainer.getSlot("burnSlot").count = mainContainer.getSlot("slot8").count;
+                mainContainer.clearSlot("slot8");
+            }
+            if (mainContainer.getSlot("targetSlot").id != 0 && mainContainer.getSlot("burnSlot").id != 0) {
+                for (name in collectorRecipes) {
+                    if (mainContainer.getSlot("targetSlot").id == collectorRecipes[name].resultid && mainContainer.getSlot("targetSlot").data == collectorRecipes[name].resultdata) {
+                        for (name2 in collectorRecipes) {
+                            if (collectorRecipes[name2].value >= collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value) this.data.needEnergy += collectorRecipes[name2].value;
+                        }
+                        this.data.validID = parseInt(name / 1000);
+                        this.data.validData = parseInt(name % 1000);
+                        this.data.validTarget = 1;
+                        break;
+                    }
+                    this.data.validTarget = 0;
+                    this.data.needEnergy = 0;
+                }
+            } else if (mainContainer.getSlot("targetSlot").id == 0) {
+                this.data.validTarget = 0;
+            }
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer != undefined && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1) {
+                this.data.shallTransfer = 0;
+            }
+        }
     },
     getGuiScreen: function() {
-        return energyCollectorUI;
+        return energyCollectorUIT1;
     },
 
 });
 
-var energyCollectorUI = new UI.StandartWindow();
-energyCollectorUI.setContent({
+var energyCollectorUIT1 = new UI.StandartWindow();
+energyCollectorUIT1.setContent({
     standart: {
         header: {
             text: {
@@ -1580,16 +1539,15 @@ energyCollectorUI.setContent({
         textures: {},
     },
     drawing: [{
-            type: "background",
-            color: android.graphics.Color.rgb(198, 198, 198)
-        },{
-			type: "bitmap", 
-			x: 365, 
-			y: 72, 
-			bitmap: "collector", 
-			scale: 3.5
-		}
-    ],
+        type: "background",
+        color: android.graphics.Color.rgb(198, 198, 198)
+    }, {
+        type: "bitmap",
+        x: 365,
+        y: 72,
+        bitmap: "collector",
+        scale: 3.5
+    }],
     elements: {
         "lightLevel": {
             type: "scale",
@@ -1600,136 +1558,1064 @@ energyCollectorUI.setContent({
             scale: 3.5,
             value: 1
         },
-		"burnScale": {
-			type: "scale",
-			x: 835, 
-			y: 165,
-			direction: 1,
-			bitmap: "collectorProcess",
+        "burnScale": {
+            type: "scale",
+            x: 835,
+            y: 165,
+            direction: 1,
+            bitmap: "collectorProcess",
             scale: 3.5,
-			value: 0
-		},
-		"burnSlot": {
-			type: "slot",
-			x: 781,
-			y: 258,
-			size: 62,
-			bitmap: "collectorBurnSlot"
-		},
-		"afterBurnSlot": {
-			type: "slot",
-			x: 781,
-			y: 100,
-			size: 62,
-			bitmap: "collectorAfterBurnSlot",
-			clicker: {
-				onClick: function(position, container, tileEntity) {
-					Player.getInventory().addItem(container.getSlot("afterBurnSlot").id, container.getSlot("afterBurnSlot").count, container.getSlot("afterBurnSlot").data);
-					container.clearSlot("afterBurnSlot");
-					container.validateSlot("afterBurnSlot");
-				}
-			}
-		},
-		"targetSlot": {
-			type: "slot",
-			x: 883,
-			y: 181,
-			size: 62,
-			bitmap: "collectorTargetSlot"
-		},
-		"sunEnergy": {
-			type: "scale",
-			x: 575,
-			y: 121,
-			scale: 3.5,
-			bitmap: "collectorBarFull",
-			direction: 0,
-			value: 0
-		},
-		"sunEnergyValue": {
-			type: "text",
-			x: 575,
-			y: 173,
-			width: 168,
-			height: 25,
-			text: ""
-		},
-		"energy": {
-			type: "scale",
-			x: 575,
-			y: 261,
-			scale: 3.5,
-			direction: 0,
-			bitmap: "collectorBarFull",
-			value: 0
-		},
-		"energyValue": {
-			type: "text",
-			x: 575,
-			y: 236,
-			width: 168,
-			height: 25,
-			text: ""
-		},
+            value: 0
+        },
+        "burnSlot": {
+            type: "slot",
+            x: 781,
+            y: 258,
+            size: 62,
+            bitmap: "collectorBurnSlot"
+        },
+        "afterBurnSlot": {
+            type: "slot",
+            x: 781,
+            y: 100,
+            size: 62,
+            bitmap: "collectorAfterBurnSlot",
+            clicker: {
+                onClick: function(position, container, tileEntity) {
+                    Player.getInventory().addItem(container.getSlot("afterBurnSlot").id, container.getSlot("afterBurnSlot").count, container.getSlot("afterBurnSlot").data);
+                    container.clearSlot("afterBurnSlot");
+                    container.validateSlot("afterBurnSlot");
+                }
+            }
+        },
+        "targetSlot": {
+            type: "slot",
+            x: 883,
+            y: 181,
+            size: 62,
+            bitmap: "collectorTargetSlot"
+        },
+        "sunEnergy": {
+            type: "scale",
+            x: 575,
+            y: 121,
+            scale: 3.5,
+            bitmap: "collectorBarFull",
+            direction: 0,
+            value: 0
+        },
+        "sunEnergyValue": {
+            type: "text",
+            x: 575,
+            y: 173,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "energy": {
+            type: "scale",
+            x: 575,
+            y: 261,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "collectorBarFull",
+            value: 0
+        },
+        "energyValue": {
+            type: "text",
+            x: 575,
+            y: 236,
+            width: 168,
+            height: 25,
+            text: ""
+        },
         "slot1": {
             type: "slot",
             x: 418,
             y: 82,
             size: 62,
-			bitmap: "collectorSlot1"
+            bitmap: "collectorSlot1"
         },
         "slot2": {
             type: "slot",
             x: 482,
             y: 82,
             size: 62,
-			bitmap: "collectorSlot2"
+            bitmap: "collectorSlot2"
         },
         "slot3": {
             type: "slot",
             x: 418,
             y: 146,
             size: 62,
-			bitmap: "collectorSlot3"
+            bitmap: "collectorSlot3"
         },
         "slot4": {
             type: "slot",
             x: 482,
             y: 146,
             size: 62,
-			bitmap: "collectorSlot4"
+            bitmap: "collectorSlot4"
         },
         "slot5": {
             type: "slot",
             x: 418,
             y: 210,
             size: 62,
-			bitmap: "collectorSlot5"
+            bitmap: "collectorSlot5"
         },
         "slot6": {
             type: "slot",
             x: 482,
             y: 210,
             size: 62,
-			bitmap: "collectorSlot6"
+            bitmap: "collectorSlot6"
         },
         "slot7": {
             type: "slot",
             x: 418,
             y: 270,
             size: 62,
-			bitmap: "collectorSlot1"
+            bitmap: "collectorSlot1"
         },
         "slot8": {
             type: "slot",
             x: 482,
             y: 270,
             size: 62,
-			bitmap: "collectorSlot8"
+            bitmap: "collectorSlot8"
         }
     }
 });
-//}
+
+IDRegistry.genBlockID("energyCollectorTier2");
+Block.createBlock("energyCollectorTier2", [{
+    name: "Собиратель энергии МК2",
+    texture: [
+        ["energyCollectorSide", 0],
+        ["energyCollectorTop2", 0],
+        ["energyCollectorFront", 0],
+        ["energyCollectorSide", 0],
+        ["energyCollectorSide", 0],
+        ["energyCollectorSide", 0]
+    ],
+    inCreative: true
+}]);
+
+TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
+    defaultvalues: {
+        activeSunEnergy: 0,
+        activeEnergy: 0,
+        maxEnergy: 100000,
+        sunTick: 1,
+        shallMove: 0,
+        needEnergy: 0,
+        validTarget: 0,
+        validID: 0,
+        validData: 0,
+        shallTransfer: 0,
+        placeToTransfer: {
+            x: 0,
+            y: 0,
+            z: 0
+        }
+    },
+    created: function() {
+        this.data.activeSunEnergy = 0;
+        this.data.activeEnergy = 0;
+        this.data.maxEnergy = 100000;
+        this.data.sunTick = 1;
+        this.data.shallMove = 0;
+        this.data.needEnergy = 0;
+        this.data.validTarget = 0;
+        this.data.validID = 0;
+        this.data.validData = 0;
+        this.data.shallTransfer = 0;
+        this.data.placeToTransfer = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+        Game.message("Created");
+    },
+    click: function(id, count, data, coords) {
+
+    },
+    getTransportSlots: function() {
+
+    },
+    init: function() {
+        Game.message("Init");
+        if (this.data.shallTransfer == 0) {
+            if ((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1  || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3 )&& World.getTileEntity(this.x + 1, this.y, this.z) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x + 1;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x - 1, this.y, this.z) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x - 1;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+                World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y + 1, this.data.placeToTransfer.z, 1);
+            } else if (World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z + 1) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z + 1;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z - 1) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z - 1;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y - 1, this.z) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y - 1;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+            }
+        }
+    },
+    tick: function() {
+        var mainContainer = this.container;
+        if (World.getThreadTime() % 4 == 0) {
+			this.data.sunTick=nativeGetLightLevel(this.x, this.y + 1, this.z)/15*3;
+            if (this.data.shallTransfer == 0) {
+                if (this.data.activeSunEnergy < this.data.maxEnergy) this.data.activeSunEnergy += this.data.sunTick;
+                if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined) {
+                    if (this.data.validTarget == 0) {
+                        var burnValue = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value;
+                        this.data.needEnergy = burnValue;
+                        if (this.data.activeSunEnergy >= burnValue) {
+                            if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+                                mainContainer.getSlot("afterBurnSlot").id = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultid;
+                                mainContainer.getSlot("afterBurnSlot").data = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultdata;
+                                mainContainer.getSlot("afterBurnSlot").count = 1;
+                                mainContainer.getSlot("burnSlot").count--;
+                                mainContainer.validateSlot("burnSlot");
+                                this.data.activeSunEnergy -= burnValue;
+                            } else if (mainContainer.getSlot("afterBurnSlot").count == 64 ||
+                                mainContainer.getSlot("afterBurnSlot").id != collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultid ||
+                                mainContainer.getSlot("afterBurnSlot").data != collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultdata) {
+                                this.data.shallMove = 1;
+                            } else {
+                                mainContainer.getSlot("afterBurnSlot").count++;
+                                mainContainer.getSlot("burnSlot").count--;
+                                mainContainer.validateSlot("burnSlot");
+                                this.data.activeSunEnergy -= burnValue;
+                            }
+                        }
+                    } else {
+                        //var burnValue = collectorRecipes[mainContainer.getSlot("targetSlot").id+""+mainContainer.getSlot("targetSlot").data].value;
+                        //this.data.needEnergy = burnValue;
+                        if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined && collectorRecipes[this.data.validID + "" + this.data.validData] != undefined) {
+                            if (this.data.activeSunEnergy >= this.data.needEnergy) {
+                                if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+                                    mainContainer.getSlot("afterBurnSlot").id = collectorRecipes[this.data.validID + "" + this.data.validData].resultid;
+                                    mainContainer.getSlot("afterBurnSlot").data = collectorRecipes[this.data.validID + "" + this.data.validData].resultdata;
+                                    mainContainer.getSlot("afterBurnSlot").count = 1;
+                                    mainContainer.getSlot("burnSlot").count--;
+                                    mainContainer.validateSlot("burnSlot");
+                                    this.data.activeSunEnergy -= this.data.needEnergy;
+                                } else if (mainContainer.getSlot("afterBurnSlot").count == 64 ||
+                                    mainContainer.getSlot("afterBurnSlot").id != collectorRecipes[this.data.validID + "" + this.data.validData].resultid ||
+                                    mainContainer.getSlot("afterBurnSlot").data != collectorRecipes[this.data.validID + "" + this.data.validData].resultdata) {
+                                    this.data.shallMove = 1;
+                                } else {
+                                    mainContainer.getSlot("afterBurnSlot").count++;
+                                    mainContainer.getSlot("burnSlot").count--;
+                                    mainContainer.validateSlot("burnSlot");
+                                    this.data.activeSunEnergy -= this.data.needEnergy;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (this.data.shallMove == 1) {
+                    for (i = 1; i < 9; i++) {
+                        if (mainContainer.getSlot("slot" + i).id == mainContainer.getSlot("afterBurnSlot").id && mainContainer.getSlot("slot" + i).data == mainContainer.getSlot("afterBurnSlot").data && mainContainer.getSlot("slot" + i) < 64) {
+                            if (mainContainer.getSlot("slot" + i).count + mainContainer.getSlot("afterBurnSlot").count <= 64) {
+                                mainContainer.getSlot("slot" + i).count += mainContainer.getSlot("afterBurnSlot").count;
+                            } else {
+                                mainContainer.getSlot("afterBurnSlot").count -= (64 - mainContainer.getSlot("afterBurnSlot").count);
+                                mainContainer.getSlot("slot" + i).count += (64 - mainContainer.getSlot("afterBurnSlot").count);
+                            }
+                        } else if (mainContainer.getSlot("slot" + i).id == 0) {
+                            mainContainer.getSlot("slot" + i).id = mainContainer.getSlot("afterBurnSlot").id;
+                            mainContainer.getSlot("slot" + i).data = mainContainer.getSlot("afterBurnSlot").data;
+                            mainContainer.getSlot("slot" + i).count = mainContainer.getSlot("afterBurnSlot").count;
+                            mainContainer.clearSlot("afterBurnSlot");
+                            mainContainer.validateSlot("slot" + i);
+                            break;
+                        }
+                    }
+                    mainContainer.validateSlot("afterBurnSlot");
+                    this.data.shallMove = 0;
+                }
+            } else {
+                var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+                if (center&&center.data.activeSunEnergy<center.data.maxEnergy) center.data.activeSunEnergy += this.data.sunTick;
+            }
+            mainContainer.setScale("sunEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
+            mainContainer.setText("sunEnergyValue", parseInt(this.data.activeSunEnergy));
+            mainContainer.setScale("energy", this.data.activeEnergy / this.data.maxEnergy);
+            mainContainer.setText("energyValue", parseInt(this.data.needEnergy));
+            mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeSunEnergy / this.data.needEnergy);
+        } else if (World.getThreadTime() % 21 == 0) {
+            for (i = 8; i > 0; i--) {
+                if (mainContainer.getSlot("slot" + i).id == 0) {
+                    for (j = i - 1; j > 0; j--) {
+                        if (mainContainer.getSlot("slot" + j).id != 0) {
+                            mainContainer.getSlot("slot" + i).id = mainContainer.getSlot("slot" + j).id;
+                            mainContainer.getSlot("slot" + i).data = mainContainer.getSlot("slot" + j).data;
+                            mainContainer.getSlot("slot" + i).count = mainContainer.getSlot("slot" + j).count;
+                            mainContainer.clearSlot("slot" + j);
+                        }
+                    }
+                }
+            }
+            if (mainContainer.getSlot("burnSlot").id == 0 && mainContainer.getSlot("slot8").id != 0 && collectorRecipes[mainContainer.getSlot("slot8").id + "" + mainContainer.getSlot("slot8").data] != undefined) {
+                mainContainer.getSlot("burnSlot").id = mainContainer.getSlot("slot8").id;
+                mainContainer.getSlot("burnSlot").data = mainContainer.getSlot("slot8").data;
+                mainContainer.getSlot("burnSlot").count = mainContainer.getSlot("slot8").count;
+                mainContainer.clearSlot("slot8");
+            }
+            if (mainContainer.getSlot("targetSlot").id != 0 && mainContainer.getSlot("burnSlot").id != 0) {
+                for (name in collectorRecipes) {
+                    if (mainContainer.getSlot("targetSlot").id == collectorRecipes[name].resultid && mainContainer.getSlot("targetSlot").data == collectorRecipes[name].resultdata) {
+                        for (name2 in collectorRecipes) {
+                            if (collectorRecipes[name2].value >= collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value) this.data.needEnergy += collectorRecipes[name2].value;
+                        }
+                        this.data.validID = parseInt(name / 1000);
+                        this.data.validData = parseInt(name % 1000);
+                        this.data.validTarget = 1;
+                        break;
+                    }
+                    this.data.validTarget = 0;
+                    this.data.needEnergy = 0;
+                }
+            } else if (mainContainer.getSlot("targetSlot").id == 0) {
+                this.data.validTarget = 0;
+            }
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer != undefined && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1) {
+                this.data.shallTransfer = 0;
+            }
+        }
+    },
+    getGuiScreen: function() {
+        return energyCollectorUIT2;
+    },
+
+});
+
+var energyCollectorUIT2 = new UI.StandartWindow();
+energyCollectorUIT2.setContent({
+    standart: {
+        header: {
+            text: {
+                text: "Собиратель энергии МК2"
+            },
+            color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
+        },
+        inventory: {
+            standart: true
+        }
+    },
+    params: {
+        textures: {},
+    },
+    drawing: [{
+        type: "background",
+        color: android.graphics.Color.rgb(198, 198, 198)
+    }, {
+        type: "bitmap",
+        x: 365,
+        y: 72,
+        bitmap: "collector",
+        scale: 3.5
+    }],
+    elements: {
+        "lightLevel": {
+            type: "scale",
+            x: 788,
+            y: 180,
+            direction: 1,
+            bitmap: "collectorSunOn",
+            scale: 3.5,
+            value: 1
+        },
+        "burnScale": {
+            type: "scale",
+            x: 835,
+            y: 165,
+            direction: 1,
+            bitmap: "collectorProcess",
+            scale: 3.5,
+            value: 0
+        },
+        "burnSlot": {
+            type: "slot",
+            x: 781,
+            y: 258,
+            size: 62,
+            bitmap: "collectorBurnSlot"
+        },
+        "afterBurnSlot": {
+            type: "slot",
+            x: 781,
+            y: 100,
+            size: 62,
+            bitmap: "collectorAfterBurnSlot",
+            clicker: {
+                onClick: function(position, container, tileEntity) {
+                    Player.getInventory().addItem(container.getSlot("afterBurnSlot").id, container.getSlot("afterBurnSlot").count, container.getSlot("afterBurnSlot").data);
+                    container.clearSlot("afterBurnSlot");
+                    container.validateSlot("afterBurnSlot");
+                }
+            }
+        },
+        "targetSlot": {
+            type: "slot",
+            x: 883,
+            y: 181,
+            size: 62,
+            bitmap: "collectorTargetSlot"
+        },
+        "sunEnergy": {
+            type: "scale",
+            x: 575,
+            y: 121,
+            scale: 3.5,
+            bitmap: "collectorBarFull",
+            direction: 0,
+            value: 0
+        },
+        "sunEnergyValue": {
+            type: "text",
+            x: 575,
+            y: 173,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "energy": {
+            type: "scale",
+            x: 575,
+            y: 261,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "collectorBarFull",
+            value: 0
+        },
+        "energyValue": {
+            type: "text",
+            x: 575,
+            y: 236,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "slot1": {
+            type: "slot",
+            x: 418,
+            y: 82,
+            size: 62,
+            bitmap: "collectorSlot1"
+        },
+        "slot2": {
+            type: "slot",
+            x: 482,
+            y: 82,
+            size: 62,
+            bitmap: "collectorSlot2"
+        },
+        "slot3": {
+            type: "slot",
+            x: 418,
+            y: 146,
+            size: 62,
+            bitmap: "collectorSlot3"
+        },
+        "slot4": {
+            type: "slot",
+            x: 482,
+            y: 146,
+            size: 62,
+            bitmap: "collectorSlot4"
+        },
+        "slot5": {
+            type: "slot",
+            x: 418,
+            y: 210,
+            size: 62,
+            bitmap: "collectorSlot5"
+        },
+        "slot6": {
+            type: "slot",
+            x: 482,
+            y: 210,
+            size: 62,
+            bitmap: "collectorSlot6"
+        },
+        "slot7": {
+            type: "slot",
+            x: 418,
+            y: 270,
+            size: 62,
+            bitmap: "collectorSlot1"
+        },
+        "slot8": {
+            type: "slot",
+            x: 482,
+            y: 270,
+            size: 62,
+            bitmap: "collectorSlot8"
+        }
+    }
+});
+
+IDRegistry.genBlockID("energyCollectorTier3");
+Block.createBlock("energyCollectorTier3", [{
+    name: "Собиратель энергии МК3",
+    texture: [
+        ["energyCollectorSide", 0],
+        ["energyCollectorTop3", 0],
+        ["energyCollectorFront", 0],
+        ["energyCollectorSide", 0],
+        ["energyCollectorSide", 0],
+        ["energyCollectorSide", 0]
+    ],
+    inCreative: true
+}]);
+
+TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
+    defaultvalues: {
+        activeSunEnergy: 0,
+        activeEnergy: 0,
+        maxEnergy: 100000,
+        sunTick: 1,
+        shallMove: 0,
+        needEnergy: 0,
+        validTarget: 0,
+        validID: 0,
+        validData: 0,
+        shallTransfer: 0,
+        placeToTransfer: {
+            x: 0,
+            y: 0,
+            z: 0
+        }
+    },
+    created: function() {
+        this.data.activeSunEnergy = 0;
+        this.data.activeEnergy = 0;
+        this.data.maxEnergy = 100000;
+        this.data.sunTick = 1;
+        this.data.shallMove = 0;
+        this.data.needEnergy = 0;
+        this.data.validTarget = 0;
+        this.data.validID = 0;
+        this.data.validData = 0;
+        this.data.shallTransfer = 0;
+        this.data.placeToTransfer = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+        Game.message("Created");
+    },
+    click: function(id, count, data, coords) {
+
+    },
+    getTransportSlots: function() {
+
+    },
+    init: function() {
+        Game.message("Init");
+        if (this.data.shallTransfer == 0) {
+            if ((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1  || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3 )&& World.getTileEntity(this.x + 1, this.y, this.z) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x + 1;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x - 1, this.y, this.z) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x - 1;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+                World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y + 1, this.data.placeToTransfer.z, 1);
+            } else if (World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z + 1) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z + 1;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z - 1) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y;
+                this.data.placeToTransfer.z = this.z - 1;
+                this.data.shallTransfer = 1;
+            } else if (World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y - 1, this.z) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) {
+                this.data.placeToTransfer.x = this.x;
+                this.data.placeToTransfer.y = this.y - 1;
+                this.data.placeToTransfer.z = this.z;
+                this.data.shallTransfer = 1;
+            }
+        }
+    },
+    tick: function() {
+        var mainContainer = this.container;
+        if (World.getThreadTime() % 4 == 0) {
+			this.data.sunTick=nativeGetLightLevel(this.x, this.y + 1, this.z)/15*10;
+            if (this.data.shallTransfer == 0) {
+                if (this.data.activeSunEnergy < this.data.maxEnergy) this.data.activeSunEnergy += this.data.sunTick;
+                if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined) {
+                    if (this.data.validTarget == 0) {
+                        var burnValue = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value;
+                        this.data.needEnergy = burnValue;
+                        if (this.data.activeSunEnergy >= burnValue) {
+                            if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+                                mainContainer.getSlot("afterBurnSlot").id = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultid;
+                                mainContainer.getSlot("afterBurnSlot").data = collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultdata;
+                                mainContainer.getSlot("afterBurnSlot").count = 1;
+                                mainContainer.getSlot("burnSlot").count--;
+                                mainContainer.validateSlot("burnSlot");
+                                this.data.activeSunEnergy -= burnValue;
+                            } else if (mainContainer.getSlot("afterBurnSlot").count == 64 ||
+                                mainContainer.getSlot("afterBurnSlot").id != collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultid ||
+                                mainContainer.getSlot("afterBurnSlot").data != collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].resultdata) {
+                                this.data.shallMove = 1;
+                            } else {
+                                mainContainer.getSlot("afterBurnSlot").count++;
+                                mainContainer.getSlot("burnSlot").count--;
+                                mainContainer.validateSlot("burnSlot");
+                                this.data.activeSunEnergy -= burnValue;
+                            }
+                        }
+                    } else {
+                        //var burnValue = collectorRecipes[mainContainer.getSlot("targetSlot").id+""+mainContainer.getSlot("targetSlot").data].value;
+                        //this.data.needEnergy = burnValue;
+                        if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined && collectorRecipes[this.data.validID + "" + this.data.validData] != undefined) {
+                            if (this.data.activeSunEnergy >= this.data.needEnergy) {
+                                if (mainContainer.getSlot("afterBurnSlot").id == 0) {
+                                    mainContainer.getSlot("afterBurnSlot").id = collectorRecipes[this.data.validID + "" + this.data.validData].resultid;
+                                    mainContainer.getSlot("afterBurnSlot").data = collectorRecipes[this.data.validID + "" + this.data.validData].resultdata;
+                                    mainContainer.getSlot("afterBurnSlot").count = 1;
+                                    mainContainer.getSlot("burnSlot").count--;
+                                    mainContainer.validateSlot("burnSlot");
+                                    this.data.activeSunEnergy -= this.data.needEnergy;
+                                } else if (mainContainer.getSlot("afterBurnSlot").count == 64 ||
+                                    mainContainer.getSlot("afterBurnSlot").id != collectorRecipes[this.data.validID + "" + this.data.validData].resultid ||
+                                    mainContainer.getSlot("afterBurnSlot").data != collectorRecipes[this.data.validID + "" + this.data.validData].resultdata) {
+                                    this.data.shallMove = 1;
+                                } else {
+                                    mainContainer.getSlot("afterBurnSlot").count++;
+                                    mainContainer.getSlot("burnSlot").count--;
+                                    mainContainer.validateSlot("burnSlot");
+                                    this.data.activeSunEnergy -= this.data.needEnergy;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (this.data.shallMove == 1) {
+                    for (i = 1; i < 9; i++) {
+                        if (mainContainer.getSlot("slot" + i).id == mainContainer.getSlot("afterBurnSlot").id && mainContainer.getSlot("slot" + i).data == mainContainer.getSlot("afterBurnSlot").data && mainContainer.getSlot("slot" + i) < 64) {
+                            if (mainContainer.getSlot("slot" + i).count + mainContainer.getSlot("afterBurnSlot").count <= 64) {
+                                mainContainer.getSlot("slot" + i).count += mainContainer.getSlot("afterBurnSlot").count;
+                            } else {
+                                mainContainer.getSlot("afterBurnSlot").count -= (64 - mainContainer.getSlot("afterBurnSlot").count);
+                                mainContainer.getSlot("slot" + i).count += (64 - mainContainer.getSlot("afterBurnSlot").count);
+                            }
+                        } else if (mainContainer.getSlot("slot" + i).id == 0) {
+                            mainContainer.getSlot("slot" + i).id = mainContainer.getSlot("afterBurnSlot").id;
+                            mainContainer.getSlot("slot" + i).data = mainContainer.getSlot("afterBurnSlot").data;
+                            mainContainer.getSlot("slot" + i).count = mainContainer.getSlot("afterBurnSlot").count;
+                            mainContainer.clearSlot("afterBurnSlot");
+                            mainContainer.validateSlot("slot" + i);
+                            break;
+                        }
+                    }
+                    mainContainer.validateSlot("afterBurnSlot");
+                    this.data.shallMove = 0;
+                }
+            } else {
+                var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+                if (center&&center.data.activeSunEnergy<center.data.maxEnergy) center.data.activeSunEnergy += this.data.sunTick;
+            }
+            mainContainer.setScale("sunEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
+            mainContainer.setText("sunEnergyValue", parseInt(this.data.activeSunEnergy));
+            mainContainer.setScale("energy", this.data.activeEnergy / this.data.maxEnergy);
+            mainContainer.setText("energyValue", parseInt(this.data.needEnergy));
+            mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeSunEnergy / this.data.needEnergy);
+        } else if (World.getThreadTime() % 21 == 0) {
+            for (i = 8; i > 0; i--) {
+                if (mainContainer.getSlot("slot" + i).id == 0) {
+                    for (j = i - 1; j > 0; j--) {
+                        if (mainContainer.getSlot("slot" + j).id != 0) {
+                            mainContainer.getSlot("slot" + i).id = mainContainer.getSlot("slot" + j).id;
+                            mainContainer.getSlot("slot" + i).data = mainContainer.getSlot("slot" + j).data;
+                            mainContainer.getSlot("slot" + i).count = mainContainer.getSlot("slot" + j).count;
+                            mainContainer.clearSlot("slot" + j);
+                        }
+                    }
+                }
+            }
+            if (mainContainer.getSlot("burnSlot").id == 0 && mainContainer.getSlot("slot8").id != 0 && collectorRecipes[mainContainer.getSlot("slot8").id + "" + mainContainer.getSlot("slot8").data] != undefined) {
+                mainContainer.getSlot("burnSlot").id = mainContainer.getSlot("slot8").id;
+                mainContainer.getSlot("burnSlot").data = mainContainer.getSlot("slot8").data;
+                mainContainer.getSlot("burnSlot").count = mainContainer.getSlot("slot8").count;
+                mainContainer.clearSlot("slot8");
+            }
+            if (mainContainer.getSlot("targetSlot").id != 0 && mainContainer.getSlot("burnSlot").id != 0) {
+                for (name in collectorRecipes) {
+                    if (mainContainer.getSlot("targetSlot").id == collectorRecipes[name].resultid && mainContainer.getSlot("targetSlot").data == collectorRecipes[name].resultdata) {
+                        for (name2 in collectorRecipes) {
+                            if (collectorRecipes[name2].value >= collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value) this.data.needEnergy += collectorRecipes[name2].value;
+                        }
+                        this.data.validID = parseInt(name / 1000);
+                        this.data.validData = parseInt(name % 1000);
+                        this.data.validTarget = 1;
+                        break;
+                    }
+                    this.data.validTarget = 0;
+                    this.data.needEnergy = 0;
+                }
+            } else if (mainContainer.getSlot("targetSlot").id == 0) {
+                this.data.validTarget = 0;
+            }
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer != undefined && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1) {
+                this.data.shallTransfer = 0;
+            }
+        }
+    },
+    getGuiScreen: function() {
+        return energyCollectorUIT3;
+    },
+
+});
+
+var energyCollectorUIT3 = new UI.StandartWindow();
+energyCollectorUIT3.setContent({
+    standart: {
+        header: {
+            text: {
+                text: "Собиратель энергии МК3"
+            },
+            color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
+        },
+        inventory: {
+            standart: true
+        }
+    },
+    params: {
+        textures: {},
+    },
+    drawing: [{
+        type: "background",
+        color: android.graphics.Color.rgb(198, 198, 198)
+    }, {
+        type: "bitmap",
+        x: 365,
+        y: 72,
+        bitmap: "collector",
+        scale: 3.5
+    }],
+    elements: {
+        "lightLevel": {
+            type: "scale",
+            x: 788,
+            y: 180,
+            direction: 1,
+            bitmap: "collectorSunOn",
+            scale: 3.5,
+            value: 1
+        },
+        "burnScale": {
+            type: "scale",
+            x: 835,
+            y: 165,
+            direction: 1,
+            bitmap: "collectorProcess",
+            scale: 3.5,
+            value: 0
+        },
+        "burnSlot": {
+            type: "slot",
+            x: 781,
+            y: 258,
+            size: 62,
+            bitmap: "collectorBurnSlot"
+        },
+        "afterBurnSlot": {
+            type: "slot",
+            x: 781,
+            y: 100,
+            size: 62,
+            bitmap: "collectorAfterBurnSlot",
+            clicker: {
+                onClick: function(position, container, tileEntity) {
+                    Player.getInventory().addItem(container.getSlot("afterBurnSlot").id, container.getSlot("afterBurnSlot").count, container.getSlot("afterBurnSlot").data);
+                    container.clearSlot("afterBurnSlot");
+                    container.validateSlot("afterBurnSlot");
+                }
+            }
+        },
+        "targetSlot": {
+            type: "slot",
+            x: 883,
+            y: 181,
+            size: 62,
+            bitmap: "collectorTargetSlot"
+        },
+        "sunEnergy": {
+            type: "scale",
+            x: 575,
+            y: 121,
+            scale: 3.5,
+            bitmap: "collectorBarFull",
+            direction: 0,
+            value: 0
+        },
+        "sunEnergyValue": {
+            type: "text",
+            x: 575,
+            y: 173,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "energy": {
+            type: "scale",
+            x: 575,
+            y: 261,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "collectorBarFull",
+            value: 0
+        },
+        "energyValue": {
+            type: "text",
+            x: 575,
+            y: 236,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "slot1": {
+            type: "slot",
+            x: 418,
+            y: 82,
+            size: 62,
+            bitmap: "collectorSlot1"
+        },
+        "slot2": {
+            type: "slot",
+            x: 482,
+            y: 82,
+            size: 62,
+            bitmap: "collectorSlot2"
+        },
+        "slot3": {
+            type: "slot",
+            x: 418,
+            y: 146,
+            size: 62,
+            bitmap: "collectorSlot3"
+        },
+        "slot4": {
+            type: "slot",
+            x: 482,
+            y: 146,
+            size: 62,
+            bitmap: "collectorSlot4"
+        },
+        "slot5": {
+            type: "slot",
+            x: 418,
+            y: 210,
+            size: 62,
+            bitmap: "collectorSlot5"
+        },
+        "slot6": {
+            type: "slot",
+            x: 482,
+            y: 210,
+            size: 62,
+            bitmap: "collectorSlot6"
+        },
+        "slot7": {
+            type: "slot",
+            x: 418,
+            y: 270,
+            size: 62,
+            bitmap: "collectorSlot1"
+        },
+        "slot8": {
+            type: "slot",
+            x: 482,
+            y: 270,
+            size: 62,
+            bitmap: "collectorSlot8"
+        }
+    }
+});
 
 
 
+
+
+
+
+
+
+
+/*var isFirstTimeHandChecked = false;
+var GUI1;
+var onetime=false;
+var buttonAllow=true;
+
+IDRegistry.genItemID("leatherTanned");
+Item.createItem("leatherTanned", "Leather Tanned", {name: "leatherTanned"});
+Recipes.addFurnace(ItemID.leatherBound, ItemID.leatherTanned, 0);
+Translation.addTranslation("Leather Tanned", {ru: "Дублённая Кожа"});
+IDRegistry.genItemID("leatherBound");
+Item.createItem("leatherBound", "Leather Bound", {name: "leatherBound"});
+Recipes.addShaped({id:ItemID.leatherBound,count:1, data:0},["xxx","axa","xxx"],['x',287,0, 'a',334,0]);
+Translation.addTranslation("Leather Bound", {ru: "Кожаный Переплёт"});
+IDRegistry.genItemID("backpack");
+Item.createItem("backpack", "Backpack", {name: "backpack"}, {
+    stack: 1
+});
+Translation.addTranslation("Backpack", {ru: "Рюкзак"});
+
+Saver.addSavesScope("BackpacksScope",
+    function read(scope){
+        backpacksContoller.save = scope;
+    },
+
+    function save(){
+        return backpacksContoller.save;
+    }
+);
+
+var backpackInventory = {
+    standart: {
+        header: {
+            text: {
+                text: "Рюзкак"
+            }
+        },
+        inventory: {
+            standart: true
+        },
+        background: {
+            standart: true
+        }
+    },
+    drawing: [],
+    elements: {}
+};
+
+var backpackWindow = new UI.StandartWindow(backpackInventory);
+
+var backpacksContoller = {
+	save: {
+        uniqueID: 1
+    },
+    openedUI: null,
+
+    openBackpack: function(backpack){
+		//var backpack = Player.getCarriedItem();
+		Game.message(backpack.data);
+		if(!this.save){this.save = {};}
+        if(this.save.uniqueID == undefined){this.save.uniqueID = 1;}
+        if(backpack.data == 0){
+			Game.message("Add");
+            backpack.data = this.save.uniqueID;
+            this.save[this.save.uniqueID] = new UI.Container().save();
+            Player.setCarriedItem(backpack.id, 1, this.save.uniqueID++);
+			Game.message("Add end");
+            this.openBackpack(backpack);
+        }else{
+			Game.message("Open");
+            this.openedUI = new UI.Container();
+			Game.message(backpack.data);
+			Game.message(JSON.stringify(this.save));
+            this.openedUI.read(this.save[backpack.data]);
+			Game.message("Open read");
+            backpackInventory.elements = {};
+            var slotsInRow = 0;
+            var xp = 320;
+            var yp = 40;
+			Game.message("Open add");
+            for(var i=1;i<17;i++){
+                backpackInventory.elements["slot"+i] = {type: "slot", x: xp, y: yp};
+                xp += 61;
+                if(i%10==0){
+                    xp = 320;
+                    yp += 61;
+                }
+            }
+            backpackInventory.standart.minHeight = yp + 60;
+			Game.message("Open gui");
+            this.openedUI.openAs(backpackWindow);
+			Game.message("Open end");
+        }
+    }
+};
+
+Callback.addCallback("NativeGuiChanged", function(screenName){
+	Game.message(screenName);
+	if(screenName=="hud_screen"){
+		buttonAllow = true;
+	} else {
+		buttonAllow = false;
+	}
+}); 
+
+Callback.addCallback("tick", function() {
+	//Game.message(buttonAllow);
+    if (Player.getCarriedItem().id == ItemID.backpack && !isFirstTimeHandChecked && buttonAllow) {
+        backpackButtons(1);
+        isFirstTimeHandChecked = true;
+    } else if (Player.getCarriedItem().id != ItemID.backpack && isFirstTimeHandChecked || !buttonAllow) {
+        backpackButtons(2);
+        isFirstTimeHandChecked = false;
+    }
+});
+
+Callback.addCallback("LevelLoaded", function() {
+	buttonAllow = true;
+});
+
+function backpackButtons(type) {
+    if (type == 1) {
+        var ctx = UI.getMcContext();
+        var screensize = ModAPI.requireGlobal("GuiUtils.GetDisplaySize()");
+        UI.run(function() {
+            var layout = new android.widget.LinearLayout(ctx);
+            layout.setOrientation(1);
+            var directory = new android.graphics.BitmapFactory.decodeFile("/sdcard/windows/BstSharedFolder/EEPE/gui/buttonCraft.png");
+            var img = new android.graphics.drawable.BitmapDrawable(directory);
+            var image = new android.widget.ImageView(ctx);
+            image.setImageBitmap(directory);
+            image.setOnClickListener(new android.view.View.OnClickListener({
+                onClick: function(viewarg) {
+					Game.message("Lol");
+                    backpacksContoller.openBackpack(Player.getCarriedItem());
+                }
+            }));
+            layout.addView(image);
+            GUI1 = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+            GUI1.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.RED));
+            GUI1.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.TOP, 0, 0);
+        });
+    } else {
+        UI.run(function() {
+            if (GUI1 != null) {
+                GUI1.dismiss();
+                GUI1 = null;
+            }
+        });
+    }
+}*/
