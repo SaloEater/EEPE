@@ -1350,32 +1350,39 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
             Game.message("3 - " + World.getBlockID(this.x, this.y, this.z + 1));
             Game.message("4 - " + World.getBlockID(this.x, this.y, this.z - 1));
             Game.message("5 - " + World.getBlockID(this.x, this.y - 1, this.z));
-            Game.message("Looking for " + BlockID.antiMatterTier1);*/
+            Game.message("Looking for " + BlockID.antiMatterTier1);
+			Game.message(World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1);
+			Game.message(World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2);
+			Game.message(World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3);
+			Game.message(World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer);
+			Game.message(World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier1);
+			Game.message(World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2);
+			Game.message(World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3);*/
             if (((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("1");
                 this.data.placeToTransfer.x = this.x + 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("2");
                 this.data.placeToTransfer.x = this.x - 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x , this.y, this.z+1) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y, this.z+1) == BlockID.antiMatterTier3) {
                 //Game.message("3");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z + 1;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x, this.y, this.z-1) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y, this.z-1) == BlockID.antiMatterTier3) {
                 //Game.message("4");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z - 1;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x, this.y-1, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y-1, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("5");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y - 1;
@@ -1391,7 +1398,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
         Game.message("MK1 is " + nativeGetLightLevel(this.x, this.y + 1, this.z) / 15);
     },
     destroyBlock: function(coords, player) {
-        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1) {
+        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier2 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier3) {
             World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied--;
         }
     },
@@ -1520,8 +1527,9 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
             } else if (mainContainer.getSlot("targetSlot").id == 0) {
                 this.data.validTarget = 0;
             }
-            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier2 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier3 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.antiMatterTier1)) {
-                //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]));
+			blockHost = World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && blockHost != BlockID.energyCollectorTier1 && blockHost != BlockID.energyCollectorTier2 && blockHost != BlockID.energyCollectorTier3 && blockHost != BlockID.antiMatterTier1 && blockHost != BlockID.antiMatterTier2 && blockHost != BlockID.antiMatterTier3) {
+                //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + blockHost);
                 this.data.shallTransfer = 0;
             }
         }
@@ -1753,25 +1761,25 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("2");
                 this.data.placeToTransfer.x = this.x - 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x , this.y, this.z+1) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y, this.z+1) == BlockID.antiMatterTier3) {
                 //Game.message("3");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z + 1;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x, this.y, this.z-1) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y, this.z-1) == BlockID.antiMatterTier3) {
                 //Game.message("4");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z - 1;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x, this.y-1, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y-1, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("5");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y - 1;
@@ -1787,7 +1795,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
         Game.message("MK2 is " + nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 3);
     },
     destroyBlock: function(coords, player) {
-        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1) {
+        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier2 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier3) {
             World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied--;
         }
     },
@@ -1916,7 +1924,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
             } else if (mainContainer.getSlot("targetSlot").id == 0) {
                 this.data.validTarget = 0;
             }
-            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier2 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier3 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.antiMatterTier1)) {
+            blockHost = World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (blockHost != BlockID.energyCollectorTier1 && blockHost != BlockID.energyCollectorTier2 && blockHost != BlockID.energyCollectorTier3 && blockHost != BlockID.antiMatterTier1 && blockHost != BlockID.antiMatterTier2 && blockHost != BlockID.antiMatterTier3)) {
                 //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]));
                 this.data.shallTransfer = 0;
             }
@@ -2149,25 +2158,25 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("2");
                 this.data.placeToTransfer.x = this.x - 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x , this.y, this.z+1) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y, this.z+1) == BlockID.antiMatterTier3) {
                 //Game.message("3");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z + 1;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x, this.y, this.z-1) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y, this.z-1) == BlockID.antiMatterTier3) {
                 //Game.message("4");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z - 1;
                 this.data.shallTransfer = 1;
-            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x, this.y-1, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x, this.y-1, this.z) == BlockID.antiMatterTier3) {
                 //Game.message("5");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y - 1;
@@ -2183,7 +2192,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
         Game.message("MK3 is " + nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 10);
     },
     destroyBlock: function(coords, player) {
-        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1) {
+        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier2 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier3) {
             World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied--;
         }
     },
@@ -2312,7 +2321,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
             } else if (mainContainer.getSlot("targetSlot").id == 0) {
                 this.data.validTarget = 0;
             }
-            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier2 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier3 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.antiMatterTier1)) {
+            blockHost = World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (blockHost != BlockID.energyCollectorTier1 && blockHost != BlockID.energyCollectorTier2 && blockHost != BlockID.energyCollectorTier3 && blockHost != BlockID.antiMatterTier1 && blockHost != BlockID.antiMatterTier2 && blockHost != BlockID.antiMatterTier3)) {
                 //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]));
                 this.data.shallTransfer = 0;
             }
@@ -2510,7 +2520,7 @@ TileEntity.registerPrototype(BlockID.antiMatterTier1, {
         activeEnergy: 0,
         maxEnergy: 100000,
         sidesBusied: 0,
-        additional: 1/4,
+        additional: 1/5,
         validBurnItem: 0
     },
     created: function() {},
@@ -2744,7 +2754,7 @@ TileEntity.registerPrototype(BlockID.antiMatterTier2, {
         activeEnergy: 0,
         maxEnergy: 100000,
         sidesBusied: 0,
-        additional: 3/4,
+        additional: 3/5,
         validBurnItem: 0
     },
     created: function() {},
@@ -2815,7 +2825,7 @@ antiMatterUI2.setContent({
     standart: {
         header: {
             text: {
-                text: "Антивещественная печь МК1"
+                text: "Антивещественная печь МК2"
             },
             color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
         },
@@ -2978,7 +2988,7 @@ TileEntity.registerPrototype(BlockID.antiMatterTier3, {
         activeEnergy: 0,
         maxEnergy: 100000,
         sidesBusied: 0,
-        additional: 10/4,
+        additional: 10/5,
         validBurnItem: 0
     },
     created: function() {},
@@ -3049,7 +3059,7 @@ antiMatterUI3.setContent({
     standart: {
         header: {
             text: {
-                text: "Антивещественная печь МК1"
+                text: "Антивещественная печь МК3"
             },
             color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
         },
