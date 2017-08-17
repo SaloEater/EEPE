@@ -619,7 +619,7 @@ function clearAdditionalButtons(container) {
 }
 
 TileEntity.registerPrototype(BlockID.TransmutationTable, {
-    defaultvalues: {},
+    defaultValues: {},
     click: function(id, count, data, coords) {
 
     },
@@ -677,7 +677,7 @@ Block.createBlock("energyCondenser", [{
 }]);
 
 TileEntity.registerPrototype(BlockID.energyCondenser, {
-    defaultvalues: {
+    defaultValues: {
         currentEnergy: 0,
         itemInSlotId: 0,
         itemInSlotData: 0,
@@ -1317,7 +1317,7 @@ Block.createBlock("energyCollectorTier1", [{
 }]);
 
 TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
-    defaultvalues: {
+    defaultValues: {
         activeSunEnergy: 0,
         activeEnergy: 0,
         maxEnergy: 100000,
@@ -1335,22 +1335,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
         }
     },
     created: function() {
-        this.data.activeSunEnergy = 0;
-        this.data.activeEnergy = 0;
-        this.data.maxEnergy = 100000;
-        this.data.sunTick = 1;
-        this.data.shallMove = 0;
-        this.data.needEnergy = 0;
-        this.data.validTarget = 0;
-        this.data.validID = 0;
-        this.data.validData = 0;
-        this.data.shallTransfer = 0;
-        this.data.placeToTransfer = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-        Game.message("Created");
+
     },
     click: function(id, count, data, coords) {
 
@@ -1359,41 +1344,61 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
 
     },
     init: function() {
-        Game.message("Init");
         if (this.data.shallTransfer == 0) {
-            if ((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1  || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3 )&& World.getTileEntity(this.x + 1, this.y, this.z) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) {
+            /*Game.message("1 - " + World.getBlockID(this.x + 1, this.y, this.z));
+            Game.message("2 - " + World.getBlockID(this.x - 1, this.y, this.z));
+            Game.message("3 - " + World.getBlockID(this.x, this.y, this.z + 1));
+            Game.message("4 - " + World.getBlockID(this.x, this.y, this.z - 1));
+            Game.message("5 - " + World.getBlockID(this.x, this.y - 1, this.z));
+            Game.message("Looking for " + BlockID.antiMatterTier1);*/
+            if (((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("1");
                 this.data.placeToTransfer.x = this.x + 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x - 1, this.y, this.z) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("2");
                 this.data.placeToTransfer.x = this.x - 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-                World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y + 1, this.data.placeToTransfer.z, 1);
-            } else if (World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z + 1) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("3");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z + 1;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z - 1) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("4");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z - 1;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y - 1, this.z) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("5");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y - 1;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
             }
+            //Game.message("Looking for another " + World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) + " on " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z);
+            if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier2 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier3) {
+                //Game.message("Added 1");
+                World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied++;
+            }
+        }
+        Game.message("MK1 is " + nativeGetLightLevel(this.x, this.y + 1, this.z) / 15);
+    },
+    destroyBlock: function(coords, player) {
+        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1) {
+            World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied--;
         }
     },
     tick: function() {
         var mainContainer = this.container;
         if (World.getThreadTime() % 4 == 0) {
-			this.data.sunTick=nativeGetLightLevel(this.x, this.y + 1, this.z)/15;
+            this.data.sunTick = nativeGetLightLevel(this.x, this.y + 1, this.z) / 15;
             if (this.data.shallTransfer == 0) {
                 if (this.data.activeSunEnergy < this.data.maxEnergy) this.data.activeSunEnergy += this.data.sunTick;
                 if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined) {
@@ -1468,13 +1473,17 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
                 }
             } else {
                 var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
-                if (center&&center.data.activeSunEnergy<center.data.maxEnergy) center.data.activeSunEnergy += this.data.sunTick;
+                //Game.message("Was " + center.data.activeSunEnergy + ", added " + this.data.sunTick);
+                if (center && center.data.activeSunEnergy < center.data.maxEnergy) {
+                    center.data.activeSunEnergy += this.data.sunTick;
+                }
             }
             mainContainer.setScale("sunEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
             mainContainer.setText("sunEnergyValue", parseInt(this.data.activeSunEnergy));
             mainContainer.setScale("energy", this.data.activeEnergy / this.data.maxEnergy);
             mainContainer.setText("energyValue", parseInt(this.data.needEnergy));
             mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeSunEnergy / this.data.needEnergy);
+            mainContainer.setScale("lightLevel", this.data.sunTick)
         } else if (World.getThreadTime() % 21 == 0) {
             for (i = 8; i > 0; i--) {
                 if (mainContainer.getSlot("slot" + i).id == 0) {
@@ -1511,7 +1520,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
             } else if (mainContainer.getSlot("targetSlot").id == 0) {
                 this.data.validTarget = 0;
             }
-            if (this.data.shallTransfer == 1 && this.data.placeToTransfer != undefined && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1) {
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier2 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier3 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.antiMatterTier1)) {
+                //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]));
                 this.data.shallTransfer = 0;
             }
         }
@@ -1703,7 +1713,7 @@ Block.createBlock("energyCollectorTier2", [{
 }]);
 
 TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
-    defaultvalues: {
+    defaultValues: {
         activeSunEnergy: 0,
         activeEnergy: 0,
         maxEnergy: 100000,
@@ -1721,22 +1731,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
         }
     },
     created: function() {
-        this.data.activeSunEnergy = 0;
-        this.data.activeEnergy = 0;
-        this.data.maxEnergy = 100000;
-        this.data.sunTick = 1;
-        this.data.shallMove = 0;
-        this.data.needEnergy = 0;
-        this.data.validTarget = 0;
-        this.data.validID = 0;
-        this.data.validData = 0;
-        this.data.shallTransfer = 0;
-        this.data.placeToTransfer = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-        Game.message("Created");
+
     },
     click: function(id, count, data, coords) {
 
@@ -1745,41 +1740,61 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 
     },
     init: function() {
-        Game.message("Init");
         if (this.data.shallTransfer == 0) {
-            if ((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1  || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3 )&& World.getTileEntity(this.x + 1, this.y, this.z) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) {
+            /*Game.message("1 - " + World.getBlockID(this.x + 1, this.y, this.z));
+            Game.message("2 - " + World.getBlockID(this.x - 1, this.y, this.z));
+            Game.message("3 - " + World.getBlockID(this.x, this.y, this.z + 1));
+            Game.message("4 - " + World.getBlockID(this.x, this.y, this.z - 1));
+            Game.message("5 - " + World.getBlockID(this.x, this.y - 1, this.z));
+            Game.message("Looking for " + BlockID.antiMatterTier1);*/
+			if (((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("1");
                 this.data.placeToTransfer.x = this.x + 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x - 1, this.y, this.z) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("2");
                 this.data.placeToTransfer.x = this.x - 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-                World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y + 1, this.data.placeToTransfer.z, 1);
-            } else if (World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z + 1) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("3");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z + 1;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z - 1) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("4");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z - 1;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y - 1, this.z) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("5");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y - 1;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
             }
+            //Game.message("Looking for another " + World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) + " on " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z);
+            if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier2 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier3) {
+                //Game.message("Added 1");
+                World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied++;
+            }
+        }
+        Game.message("MK2 is " + nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 3);
+    },
+    destroyBlock: function(coords, player) {
+        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1) {
+            World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied--;
         }
     },
     tick: function() {
         var mainContainer = this.container;
         if (World.getThreadTime() % 4 == 0) {
-			this.data.sunTick=nativeGetLightLevel(this.x, this.y + 1, this.z)/15*3;
+            this.data.sunTick = nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 3;
             if (this.data.shallTransfer == 0) {
                 if (this.data.activeSunEnergy < this.data.maxEnergy) this.data.activeSunEnergy += this.data.sunTick;
                 if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined) {
@@ -1854,13 +1869,17 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
                 }
             } else {
                 var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
-                if (center&&center.data.activeSunEnergy<center.data.maxEnergy) center.data.activeSunEnergy += this.data.sunTick;
+                //Game.message("Was " + center.data.activeSunEnergy + ", added " + this.data.sunTick);
+                if (center && center.data.activeSunEnergy < center.data.maxEnergy) {
+                    center.data.activeSunEnergy += this.data.sunTick;
+                }
             }
             mainContainer.setScale("sunEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
             mainContainer.setText("sunEnergyValue", parseInt(this.data.activeSunEnergy));
             mainContainer.setScale("energy", this.data.activeEnergy / this.data.maxEnergy);
             mainContainer.setText("energyValue", parseInt(this.data.needEnergy));
             mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeSunEnergy / this.data.needEnergy);
+            mainContainer.setScale("lightLevel", this.data.sunTick / 3);
         } else if (World.getThreadTime() % 21 == 0) {
             for (i = 8; i > 0; i--) {
                 if (mainContainer.getSlot("slot" + i).id == 0) {
@@ -1897,7 +1916,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
             } else if (mainContainer.getSlot("targetSlot").id == 0) {
                 this.data.validTarget = 0;
             }
-            if (this.data.shallTransfer == 1 && this.data.placeToTransfer != undefined && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1) {
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier2 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier3 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.antiMatterTier1)) {
+                //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]));
                 this.data.shallTransfer = 0;
             }
         }
@@ -2089,7 +2109,7 @@ Block.createBlock("energyCollectorTier3", [{
 }]);
 
 TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
-    defaultvalues: {
+    defaultValues: {
         activeSunEnergy: 0,
         activeEnergy: 0,
         maxEnergy: 100000,
@@ -2107,22 +2127,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
         }
     },
     created: function() {
-        this.data.activeSunEnergy = 0;
-        this.data.activeEnergy = 0;
-        this.data.maxEnergy = 100000;
-        this.data.sunTick = 1;
-        this.data.shallMove = 0;
-        this.data.needEnergy = 0;
-        this.data.validTarget = 0;
-        this.data.validID = 0;
-        this.data.validData = 0;
-        this.data.shallTransfer = 0;
-        this.data.placeToTransfer = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-        Game.message("Created");
+
     },
     click: function(id, count, data, coords) {
 
@@ -2131,41 +2136,61 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
 
     },
     init: function() {
-        Game.message("Init");
         if (this.data.shallTransfer == 0) {
-            if ((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1  || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3 )&& World.getTileEntity(this.x + 1, this.y, this.z) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) {
+            /*Game.message("1 - " + World.getBlockID(this.x + 1, this.y, this.z));
+            Game.message("2 - " + World.getBlockID(this.x - 1, this.y, this.z));
+            Game.message("3 - " + World.getBlockID(this.x, this.y, this.z + 1));
+            Game.message("4 - " + World.getBlockID(this.x, this.y, this.z - 1));
+            Game.message("5 - " + World.getBlockID(this.x, this.y - 1, this.z));
+            Game.message("Looking for " + BlockID.antiMatterTier1);*/
+            if (((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("1");
                 this.data.placeToTransfer.x = this.x + 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x - 1, this.y, this.z) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x - 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x - 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("2");
                 this.data.placeToTransfer.x = this.x - 1;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
-                World.setBlock(this.data.placeToTransfer.x, this.data.placeToTransfer.y + 1, this.data.placeToTransfer.z, 1);
-            } else if (World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z + 1) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z + 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z + 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("3");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z + 1;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y, this.z - 1) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y, this.z - 1).data.shallTransfer == 0) || World.getBlockID(this.x, this.y, this.z - 1) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("4");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y;
                 this.data.placeToTransfer.z = this.z - 1;
                 this.data.shallTransfer = 1;
-            } else if (World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 && World.getTileEntity(this.x, this.y - 1, this.z) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) {
+            } else if (((World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x, this.y - 1, this.z).data.shallTransfer == 0) || World.getBlockID(this.x, this.y - 1, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3) {
+                //Game.message("5");
                 this.data.placeToTransfer.x = this.x;
                 this.data.placeToTransfer.y = this.y - 1;
                 this.data.placeToTransfer.z = this.z;
                 this.data.shallTransfer = 1;
             }
+            //Game.message("Looking for another " + World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) + " on " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z);
+            if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier2 || World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier3) {
+                //Game.message("Added 1");
+                World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied++;
+            }
+        }
+        Game.message("MK3 is " + nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 10);
+    },
+    destroyBlock: function(coords, player) {
+        if (World.getBlockID(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z) == BlockID.antiMatterTier1) {
+            World.getTileEntity(this.data.placeToTransfer.x, this.data.placeToTransfer.y, this.data.placeToTransfer.z).data.sidesBusied--;
         }
     },
     tick: function() {
         var mainContainer = this.container;
         if (World.getThreadTime() % 4 == 0) {
-			this.data.sunTick=nativeGetLightLevel(this.x, this.y + 1, this.z)/15*10;
+            this.data.sunTick = nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 10;
             if (this.data.shallTransfer == 0) {
                 if (this.data.activeSunEnergy < this.data.maxEnergy) this.data.activeSunEnergy += this.data.sunTick;
                 if (collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data] != undefined) {
@@ -2240,13 +2265,17 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
                 }
             } else {
                 var center = World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]);
-                if (center&&center.data.activeSunEnergy<center.data.maxEnergy) center.data.activeSunEnergy += this.data.sunTick;
+                //Game.message("Was " + center.data.activeSunEnergy + ", added " + this.data.sunTick);
+                if (center && center.data.activeSunEnergy < center.data.maxEnergy) {
+                    center.data.activeSunEnergy += this.data.sunTick;
+                }
             }
             mainContainer.setScale("sunEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
             mainContainer.setText("sunEnergyValue", parseInt(this.data.activeSunEnergy));
             mainContainer.setScale("energy", this.data.activeEnergy / this.data.maxEnergy);
             mainContainer.setText("energyValue", parseInt(this.data.needEnergy));
             mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeSunEnergy / this.data.needEnergy);
+            mainContainer.setScale("lightLevel", this.data.sunTick / 10);
         } else if (World.getThreadTime() % 21 == 0) {
             for (i = 8; i > 0; i--) {
                 if (mainContainer.getSlot("slot" + i).id == 0) {
@@ -2283,7 +2312,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier3, {
             } else if (mainContainer.getSlot("targetSlot").id == 0) {
                 this.data.validTarget = 0;
             }
-            if (this.data.shallTransfer == 1 && this.data.placeToTransfer != undefined && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1) {
+            if (this.data.shallTransfer == 1 && this.data.placeToTransfer && (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier1 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier2 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.energyCollectorTier3 && World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]) != BlockID.antiMatterTier1)) {
+                //Game.message("Stop transfer to " + this.data.placeToTransfer.x + ":" + this.data.placeToTransfer.y + ":" + this.data.placeToTransfer.z + "-" + World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]));
                 this.data.shallTransfer = 0;
             }
         }
@@ -2460,162 +2490,704 @@ energyCollectorUIT3.setContent({
     }
 });
 
+IDRegistry.genBlockID("antiMatterTier1");
+Block.createBlock("antiMatterTier1", [{
+    name: "Антивещественная печь МК1",
+    texture: [
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelayTop1", 0],
+        ["AntimatterRelayFront", 0],
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelaySide", 0]
+    ],
+    inCreative: true
+}]);
 
+TileEntity.registerPrototype(BlockID.antiMatterTier1, {
+    defaultValues: {
+        activeSunEnergy: 0,
+        activeEnergy: 0,
+        maxEnergy: 100000,
+        sidesBusied: 0,
+        additional: 1/4,
+        validBurnItem: 0
+    },
+    created: function() {},
+    click: function(id, count, data, coords) {
 
+    },
+    getTransportSlots: function() {
 
+    },
+    init: function() {
 
+    },
+    tick: function() {
+        if (World.getThreadTime() % 4 == 0) {
+            if (this.container.getSlot("burnSlot").id != 0 && getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data) != -1) {
+                if (this.data.activeSunEnergy + getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data) <= this.data.maxEnergy) {
+                    this.data.activeSunEnergy += getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data);
+                    this.container.getSlot("burnSlot").count--;
+                    this.container.validateSlot("burnSlot");
 
+                }
+                this.data.validBurnItem = 1;
+            } else {
+                this.data.validBurnItem = 0;
+            }
+            this.data.activeSunEnergy += this.data.activeSunEnergy < this.data.maxEnergy ? this.data.sidesBusied * this.data.additional : 0;
+            this.container.setScale("mainEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
+            this.container.setScale("chargingWandBar", 0);
+            this.container.setScale("dechargingWandBar", 0);
+            this.container.setScale("wandCharging", 1);
+            this.container.setScale("burn", this.data.validBurnItem);
+            this.container.setText("chargingWandValue", 0);
+            this.container.setText("dechargingWandValue", 0);
+            this.container.setText("mainEnergyValue", parseInt(this.data.activeSunEnergy));
+            //Если в wandSlot есть klein star, то this.container.setScale("wandCharging", 1);
+            //Если в wandSlot есть klein star, то this.container.setscale("chargingWandBar", /*энергия в палке*///*макс энергию*/);
+            //Если в wandSlot есть klein star, то this.container.setscale("dechargingWandBar", /*энергия в палке*///*макс энергию*/);
 
-
-
-
-/*var isFirstTimeHandChecked = false;
-var GUI1;
-var onetime=false;
-var buttonAllow=true;
-
-IDRegistry.genItemID("leatherTanned");
-Item.createItem("leatherTanned", "Leather Tanned", {name: "leatherTanned"});
-Recipes.addFurnace(ItemID.leatherBound, ItemID.leatherTanned, 0);
-Translation.addTranslation("Leather Tanned", {ru: "Дублённая Кожа"});
-IDRegistry.genItemID("leatherBound");
-Item.createItem("leatherBound", "Leather Bound", {name: "leatherBound"});
-Recipes.addShaped({id:ItemID.leatherBound,count:1, data:0},["xxx","axa","xxx"],['x',287,0, 'a',334,0]);
-Translation.addTranslation("Leather Bound", {ru: "Кожаный Переплёт"});
-IDRegistry.genItemID("backpack");
-Item.createItem("backpack", "Backpack", {name: "backpack"}, {
-    stack: 1
-});
-Translation.addTranslation("Backpack", {ru: "Рюкзак"});
-
-Saver.addSavesScope("BackpacksScope",
-    function read(scope){
-        backpacksContoller.save = scope;
+        } else if (World.getThreadTime() % 21 == 0) {
+            for (i = 6; i > 0; i--) {
+                if (this.container.getSlot("slot" + i).id == 0) {
+                    for (j = i - 1; j > 0; j--) {
+                        if (this.container.getSlot("slot" + j).id != 0) {
+                            this.container.getSlot("slot" + i).id = this.container.getSlot("slot" + j).id;
+                            this.container.getSlot("slot" + i).data = this.container.getSlot("slot" + j).data;
+                            this.container.getSlot("slot" + i).count = this.container.getSlot("slot" + j).count;
+                            this.container.clearSlot("slot" + j);
+                        }
+                    }
+                }
+            }
+            if (this.container.getSlot("burnSlot").id == 0 && this.container.getSlot("slot6").id != 0) {
+                this.container.getSlot("burnSlot").id = this.container.getSlot("slot6").id;
+                this.container.getSlot("burnSlot").data = this.container.getSlot("slot6").data;
+                this.container.getSlot("burnSlot").count = this.container.getSlot("slot6").count;
+                this.container.clearSlot("slot6");
+            }
+        }
+    },
+    getGuiScreen: function() {
+        return antiMatterUI1;
     },
 
-    function save(){
-        return backpacksContoller.save;
-    }
-);
+});
 
-var backpackInventory = {
+var antiMatterUI1 = new UI.StandartWindow();
+antiMatterUI1.setContent({
     standart: {
         header: {
             text: {
-                text: "Рюзкак"
-            }
+                text: "Антивещественная печь МК1"
+            },
+            color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
         },
         inventory: {
             standart: true
+        }
+    },
+    params: {
+        textures: {},
+    },
+    drawing: [{
+        type: "background",
+        color: android.graphics.Color.rgb(198, 198, 198)
+    }, {
+        type: "bitmap",
+        x: 365,
+        y: 72,
+        bitmap: "amSmallBg",
+        scale: 3.5
+    }],
+    elements: {
+        "mainEnergy": {
+            type: "scale",
+            x: 515,
+            y: 82,
+            direction: 0,
+            bitmap: "amBigBarFull",
+            scale: 3.5,
+            value: 1
         },
-        background: {
+        "mainEnergyValue": {
+            type: "text",
+            x: 652,
+            y: 138,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "dechargingWandBar": {
+            type: "scale",
+            x: 516,
+            y: 296,
+            direction: 0,
+            bitmap: "amSmallBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "dechargingWandValue": {
+            type: "text",
+            x: 547,
+            y: 342,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "chargingWandBar": {
+            type: "scale",
+            x: 696,
+            y: 296,
+            direction: 0,
+            bitmap: "amSmallBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "chargingWandValue": {
+            type: "text",
+            x: 727,
+            y: 342,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "wandSlot": {
+            type: "slot",
+            x: 717,
+            y: 195,
+            size: 90,
+            bitmap: "amResultSlot"
+        },
+        "burnSlot": {
+            type: "slot",
+            x: 509,
+            y: 195,
+            size: 90
+        },
+        "wandCharging": {
+            type: "scale",
+            x: 606,
+            y: 215,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "amArrowFull",
+            value: 1
+        },
+        "burn": {
+            type: "scale",
+            x: 527,
+            y: 144,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "amBurnFull",
+            value: 1
+        },
+        "slot1": {
+            type: "slot",
+            x: 382,
+            y: 118,
+            size: 64
+        },
+        "slot2": {
+            type: "slot",
+            x: 446,
+            y: 118,
+            size: 64
+        },
+        "slot3": {
+            type: "slot",
+            x: 382,
+            y: 180,
+            size: 64
+        },
+        "slot4": {
+            type: "slot",
+            x: 446,
+            y: 180,
+            size: 64
+        },
+        "slot5": {
+            type: "slot",
+            x: 382,
+            y: 244,
+            size: 64
+        },
+        "slot6": {
+            type: "slot",
+            x: 446,
+            y: 244,
+            size: 64
+        }
+    }
+});
+
+IDRegistry.genBlockID("antiMatterTier2");
+Block.createBlock("antiMatterTier2", [{
+    name: "Антивещественная печь МК2",
+    texture: [
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelayTop2", 0],
+        ["AntimatterRelayFront", 0],
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelaySide", 0]
+    ],
+    inCreative: true
+}]);
+
+TileEntity.registerPrototype(BlockID.antiMatterTier2, {
+    defaultValues: {
+        activeSunEnergy: 0,
+        activeEnergy: 0,
+        maxEnergy: 100000,
+        sidesBusied: 0,
+        additional: 3/4,
+        validBurnItem: 0
+    },
+    created: function() {},
+    click: function(id, count, data, coords) {
+
+    },
+    getTransportSlots: function() {
+
+    },
+    init: function() {
+
+    },
+    tick: function() {
+        if (World.getThreadTime() % 4 == 0) {
+            if (this.container.getSlot("burnSlot").id != 0 && getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data) != -1) {
+                if (this.data.activeSunEnergy + getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data) <= this.data.maxEnergy) {
+                    this.data.activeSunEnergy += getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data);
+                    this.container.getSlot("burnSlot").count--;
+                    this.container.validateSlot("burnSlot");
+
+                }
+                this.data.validBurnItem = 1;
+            } else {
+                this.data.validBurnItem = 0;
+            }
+            this.data.activeSunEnergy += this.data.activeSunEnergy < this.data.maxEnergy ? this.data.sidesBusied * this.data.additional : 0;
+            this.container.setScale("mainEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
+            this.container.setScale("chargingWandBar", 0);
+            this.container.setScale("dechargingWandBar", 0);
+            this.container.setScale("wandCharging", 1);
+            this.container.setScale("burn", this.data.validBurnItem);
+            this.container.setText("chargingWandValue", 0);
+            this.container.setText("dechargingWandValue", 0);
+            this.container.setText("mainEnergyValue", parseInt(this.data.activeSunEnergy));
+            //Если в wandSlot есть klein star, то this.container.setScale("wandCharging", 1);
+            //Если в wandSlot есть klein star, то this.container.setscale("chargingWandBar", /*энергия в палке*///*макс энергию*/);
+            //Если в wandSlot есть klein star, то this.container.setscale("dechargingWandBar", /*энергия в палке*///*макс энергию*/);
+
+        } else if (World.getThreadTime() % 21 == 0) {
+            for (i = 6; i > 0; i--) {
+                if (this.container.getSlot("slot" + i).id == 0) {
+                    for (j = i - 1; j > 0; j--) {
+                        if (this.container.getSlot("slot" + j).id != 0) {
+                            this.container.getSlot("slot" + i).id = this.container.getSlot("slot" + j).id;
+                            this.container.getSlot("slot" + i).data = this.container.getSlot("slot" + j).data;
+                            this.container.getSlot("slot" + i).count = this.container.getSlot("slot" + j).count;
+                            this.container.clearSlot("slot" + j);
+                        }
+                    }
+                }
+            }
+            if (this.container.getSlot("burnSlot").id == 0 && this.container.getSlot("slot6").id != 0) {
+                this.container.getSlot("burnSlot").id = this.container.getSlot("slot6").id;
+                this.container.getSlot("burnSlot").data = this.container.getSlot("slot6").data;
+                this.container.getSlot("burnSlot").count = this.container.getSlot("slot6").count;
+                this.container.clearSlot("slot6");
+            }
+        }
+    },
+    getGuiScreen: function() {
+        return antiMatterUI2;
+    },
+
+});
+
+var antiMatterUI2 = new UI.StandartWindow();
+antiMatterUI2.setContent({
+    standart: {
+        header: {
+            text: {
+                text: "Антивещественная печь МК1"
+            },
+            color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
+        },
+        inventory: {
             standart: true
         }
     },
-    drawing: [],
-    elements: {}
-};
-
-var backpackWindow = new UI.StandartWindow(backpackInventory);
-
-var backpacksContoller = {
-	save: {
-        uniqueID: 1
+    params: {
+        textures: {},
     },
-    openedUI: null,
-
-    openBackpack: function(backpack){
-		//var backpack = Player.getCarriedItem();
-		Game.message(backpack.data);
-		if(!this.save){this.save = {};}
-        if(this.save.uniqueID == undefined){this.save.uniqueID = 1;}
-        if(backpack.data == 0){
-			Game.message("Add");
-            backpack.data = this.save.uniqueID;
-            this.save[this.save.uniqueID] = new UI.Container().save();
-            Player.setCarriedItem(backpack.id, 1, this.save.uniqueID++);
-			Game.message("Add end");
-            this.openBackpack(backpack);
-        }else{
-			Game.message("Open");
-            this.openedUI = new UI.Container();
-			Game.message(backpack.data);
-			Game.message(JSON.stringify(this.save));
-            this.openedUI.read(this.save[backpack.data]);
-			Game.message("Open read");
-            backpackInventory.elements = {};
-            var slotsInRow = 0;
-            var xp = 320;
-            var yp = 40;
-			Game.message("Open add");
-            for(var i=1;i<17;i++){
-                backpackInventory.elements["slot"+i] = {type: "slot", x: xp, y: yp};
-                xp += 61;
-                if(i%10==0){
-                    xp = 320;
-                    yp += 61;
-                }
-            }
-            backpackInventory.standart.minHeight = yp + 60;
-			Game.message("Open gui");
-            this.openedUI.openAs(backpackWindow);
-			Game.message("Open end");
+    drawing: [{
+        type: "background",
+        color: android.graphics.Color.rgb(198, 198, 198)
+    }, {
+        type: "bitmap",
+        x: 365,
+        y: 72,
+        bitmap: "amSmallBg",
+        scale: 3.5
+    }],
+    elements: {
+        "mainEnergy": {
+            type: "scale",
+            x: 515,
+            y: 82,
+            direction: 0,
+            bitmap: "amBigBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "mainEnergyValue": {
+            type: "text",
+            x: 652,
+            y: 138,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "dechargingWandBar": {
+            type: "scale",
+            x: 516,
+            y: 296,
+            direction: 0,
+            bitmap: "amSmallBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "dechargingWandValue": {
+            type: "text",
+            x: 547,
+            y: 342,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "chargingWandBar": {
+            type: "scale",
+            x: 696,
+            y: 296,
+            direction: 0,
+            bitmap: "amSmallBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "chargingWandValue": {
+            type: "text",
+            x: 727,
+            y: 342,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "wandSlot": {
+            type: "slot",
+            x: 717,
+            y: 195,
+            size: 90,
+            bitmap: "amResultSlot"
+        },
+        "burnSlot": {
+            type: "slot",
+            x: 509,
+            y: 195,
+            size: 90
+        },
+        "wandCharging": {
+            type: "scale",
+            x: 606,
+            y: 215,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "amArrowFull",
+            value: 1
+        },
+        "burn": {
+            type: "scale",
+            x: 527,
+            y: 144,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "amBurnFull",
+            value: 1
+        },
+        "slot1": {
+            type: "slot",
+            x: 382,
+            y: 118,
+            size: 64
+        },
+        "slot2": {
+            type: "slot",
+            x: 446,
+            y: 118,
+            size: 64
+        },
+        "slot3": {
+            type: "slot",
+            x: 382,
+            y: 180,
+            size: 64
+        },
+        "slot4": {
+            type: "slot",
+            x: 446,
+            y: 180,
+            size: 64
+        },
+        "slot5": {
+            type: "slot",
+            x: 382,
+            y: 244,
+            size: 64
+        },
+        "slot6": {
+            type: "slot",
+            x: 446,
+            y: 244,
+            size: 64
         }
     }
-};
-
-Callback.addCallback("NativeGuiChanged", function(screenName){
-	Game.message(screenName);
-	if(screenName=="hud_screen"){
-		buttonAllow = true;
-	} else {
-		buttonAllow = false;
-	}
-}); 
-
-Callback.addCallback("tick", function() {
-	//Game.message(buttonAllow);
-    if (Player.getCarriedItem().id == ItemID.backpack && !isFirstTimeHandChecked && buttonAllow) {
-        backpackButtons(1);
-        isFirstTimeHandChecked = true;
-    } else if (Player.getCarriedItem().id != ItemID.backpack && isFirstTimeHandChecked || !buttonAllow) {
-        backpackButtons(2);
-        isFirstTimeHandChecked = false;
-    }
 });
 
-Callback.addCallback("LevelLoaded", function() {
-	buttonAllow = true;
-});
+IDRegistry.genBlockID("antiMatterTier3");
+Block.createBlock("antiMatterTier3", [{
+    name: "Антивещественная печь МК3",
+    texture: [
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelayTop3", 0],
+        ["AntimatterRelayFront", 0],
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelaySide", 0],
+        ["AntimatterRelaySide", 0]
+    ],
+    inCreative: true
+}]);
 
-function backpackButtons(type) {
-    if (type == 1) {
-        var ctx = UI.getMcContext();
-        var screensize = ModAPI.requireGlobal("GuiUtils.GetDisplaySize()");
-        UI.run(function() {
-            var layout = new android.widget.LinearLayout(ctx);
-            layout.setOrientation(1);
-            var directory = new android.graphics.BitmapFactory.decodeFile("/sdcard/windows/BstSharedFolder/EEPE/gui/buttonCraft.png");
-            var img = new android.graphics.drawable.BitmapDrawable(directory);
-            var image = new android.widget.ImageView(ctx);
-            image.setImageBitmap(directory);
-            image.setOnClickListener(new android.view.View.OnClickListener({
-                onClick: function(viewarg) {
-					Game.message("Lol");
-                    backpacksContoller.openBackpack(Player.getCarriedItem());
+TileEntity.registerPrototype(BlockID.antiMatterTier3, {
+    defaultValues: {
+        activeSunEnergy: 0,
+        activeEnergy: 0,
+        maxEnergy: 100000,
+        sidesBusied: 0,
+        additional: 10/4,
+        validBurnItem: 0
+    },
+    created: function() {},
+    click: function(id, count, data, coords) {
+
+    },
+    getTransportSlots: function() {
+
+    },
+    init: function() {
+
+    },
+    tick: function() {
+        if (World.getThreadTime() % 4 == 0) {
+            if (this.container.getSlot("burnSlot").id != 0 && getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data) != -1) {
+                if (this.data.activeSunEnergy + getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data) <= this.data.maxEnergy) {
+                    this.data.activeSunEnergy += getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data);
+                    this.container.getSlot("burnSlot").count--;
+                    this.container.validateSlot("burnSlot");
+
                 }
-            }));
-            layout.addView(image);
-            GUI1 = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-            GUI1.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.RED));
-            GUI1.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.TOP, 0, 0);
-        });
-    } else {
-        UI.run(function() {
-            if (GUI1 != null) {
-                GUI1.dismiss();
-                GUI1 = null;
+                this.data.validBurnItem = 1;
+            } else {
+                this.data.validBurnItem = 0;
             }
-        });
+            this.data.activeSunEnergy += this.data.activeSunEnergy < this.data.maxEnergy ? this.data.sidesBusied * this.data.additional : 0;
+            this.container.setScale("mainEnergy", this.data.activeSunEnergy / this.data.maxEnergy);
+            this.container.setScale("chargingWandBar", 0);
+            this.container.setScale("dechargingWandBar", 0);
+            this.container.setScale("wandCharging", 1);
+            this.container.setScale("burn", this.data.validBurnItem);
+            this.container.setText("chargingWandValue", 0);
+            this.container.setText("dechargingWandValue", 0);
+            this.container.setText("mainEnergyValue", parseInt(this.data.activeSunEnergy));
+            //Если в wandSlot есть klein star, то this.container.setScale("wandCharging", 1);
+            //Если в wandSlot есть klein star, то this.container.setscale("chargingWandBar", /*энергия в палке*///*макс энергию*/);
+            //Если в wandSlot есть klein star, то this.container.setscale("dechargingWandBar", /*энергия в палке*///*макс энергию*/);
+
+        } else if (World.getThreadTime() % 21 == 0) {
+            for (i = 6; i > 0; i--) {
+                if (this.container.getSlot("slot" + i).id == 0) {
+                    for (j = i - 1; j > 0; j--) {
+                        if (this.container.getSlot("slot" + j).id != 0) {
+                            this.container.getSlot("slot" + i).id = this.container.getSlot("slot" + j).id;
+                            this.container.getSlot("slot" + i).data = this.container.getSlot("slot" + j).data;
+                            this.container.getSlot("slot" + i).count = this.container.getSlot("slot" + j).count;
+                            this.container.clearSlot("slot" + j);
+                        }
+                    }
+                }
+            }
+            if (this.container.getSlot("burnSlot").id == 0 && this.container.getSlot("slot6").id != 0) {
+                this.container.getSlot("burnSlot").id = this.container.getSlot("slot6").id;
+                this.container.getSlot("burnSlot").data = this.container.getSlot("slot6").data;
+                this.container.getSlot("burnSlot").count = this.container.getSlot("slot6").count;
+                this.container.clearSlot("slot6");
+            }
+        }
+    },
+    getGuiScreen: function() {
+        return antiMatterUI3;
+    },
+
+});
+
+var antiMatterUI3 = new UI.StandartWindow();
+antiMatterUI3.setContent({
+    standart: {
+        header: {
+            text: {
+                text: "Антивещественная печь МК1"
+            },
+            color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
+        },
+        inventory: {
+            standart: true
+        }
+    },
+    params: {
+        textures: {},
+    },
+    drawing: [{
+        type: "background",
+        color: android.graphics.Color.rgb(198, 198, 198)
+    }, {
+        type: "bitmap",
+        x: 365,
+        y: 72,
+        bitmap: "amSmallBg",
+        scale: 3.5
+    }],
+    elements: {
+        "mainEnergy": {
+            type: "scale",
+            x: 515,
+            y: 82,
+            direction: 0,
+            bitmap: "amBigBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "mainEnergyValue": {
+            type: "text",
+            x: 652,
+            y: 138,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "dechargingWandBar": {
+            type: "scale",
+            x: 516,
+            y: 296,
+            direction: 0,
+            bitmap: "amSmallBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "dechargingWandValue": {
+            type: "text",
+            x: 547,
+            y: 342,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "chargingWandBar": {
+            type: "scale",
+            x: 696,
+            y: 296,
+            direction: 0,
+            bitmap: "amSmallBarFull",
+            scale: 3.5,
+            value: 1
+        },
+        "chargingWandValue": {
+            type: "text",
+            x: 727,
+            y: 342,
+            width: 168,
+            height: 25,
+            text: ""
+        },
+        "wandSlot": {
+            type: "slot",
+            x: 717,
+            y: 195,
+            size: 90,
+            bitmap: "amResultSlot"
+        },
+        "burnSlot": {
+            type: "slot",
+            x: 509,
+            y: 195,
+            size: 90
+        },
+        "wandCharging": {
+            type: "scale",
+            x: 606,
+            y: 215,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "amArrowFull",
+            value: 1
+        },
+        "burn": {
+            type: "scale",
+            x: 527,
+            y: 144,
+            scale: 3.5,
+            direction: 0,
+            bitmap: "amBurnFull",
+            value: 1
+        },
+        "slot1": {
+            type: "slot",
+            x: 382,
+            y: 118,
+            size: 64
+        },
+        "slot2": {
+            type: "slot",
+            x: 446,
+            y: 118,
+            size: 64
+        },
+        "slot3": {
+            type: "slot",
+            x: 382,
+            y: 180,
+            size: 64
+        },
+        "slot4": {
+            type: "slot",
+            x: 446,
+            y: 180,
+            size: 64
+        },
+        "slot5": {
+            type: "slot",
+            x: 382,
+            y: 244,
+            size: 64
+        },
+        "slot6": {
+            type: "slot",
+            x: 446,
+            y: 244,
+            size: 64
+        }
     }
-}*/
+});
