@@ -25,7 +25,7 @@ Callback.addCallback("ItemUse", function(coords, item, block) {
         lastCoords.z = coords.z;
         invValueButton(1);
     }
-}
+});
 
 function invValueButton(type) {
     if (type == 1) {

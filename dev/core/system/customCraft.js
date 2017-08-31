@@ -11,11 +11,8 @@ var kleinStarEnergyCraft = function(api, field, result) {
 		if(field[i].id!=0 && field[i].data!=0)craftedEMC+=kleinStarController.getEMC(field[i].data);
 		api.decreaseFieldSlot(i);
     };
-	Game.message(Was +result.data);
 	result.data=kleinStarController.registerWand(result);
-	Game.message(Become +result.data + with +kleinStarController.getEMC(result.data));
 	kleinStarController.addEMC(result.data, craftedEMC);
-	Game.message(Last one +kleinStarController.getEMC(result.data));
 }
 
 var philosopherStoneCraft = function(api, field, result) {
