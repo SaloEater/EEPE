@@ -39,6 +39,8 @@ var EMCSystem = {
 			resultid: 348,
 			resultdata: 0
 		},
+
+
 		1520: {
 			value: 192,
 			resultid: 377,
@@ -55,6 +57,7 @@ var EMCSystem = {
 			resultdata: 0,
 		},
 	},
+	
 	
 	EMCForItems: [
 	

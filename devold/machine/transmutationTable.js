@@ -16,13 +16,13 @@ Block.createBlock("TransmutationTable", [{
     inCreative: true
 }]);
 Block.setBlockShape(BlockID.TransmutationTable, {
-    x: 0.001,
-    y: 0.001,
-    z: 0.001
+    x: 0,
+    y: 0,
+    z: 0
 }, {
-    x: 0.999,
+    x: 1,
     y: 0.3,
-    z: 0.999
+    z: 1
 });
 
 var TransmutationTableUI = new UI.StandartWindow();

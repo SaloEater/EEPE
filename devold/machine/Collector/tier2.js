@@ -148,11 +148,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 								if (this.data.validTarget == 0) {
 									for (name in EMCSystem.collectorRecipes) {
 										if (mainContainer.getSlot("targetSlot").id == EMCSystem.collectorRecipes[name].resultid && mainContainer.getSlot("targetSlot").data == EMCSystem.collectorRecipes[name].resultdata) {
-											var found=false;
-											var lookingFor = mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data;
-											for (name2 in EMCSystem.collectorRecipes) {
-												if(name2==lookingFor && !found)found=true;
-												if (name2!=lookingFor&&found) this.data.needEnergy += EMCSystem.collectorRecipes[name2].value;
+											for (name2 in EMCSystem.EMCSystem.) {
+												if (EMCSystem.collectorRecipes[name2].value >= EMCSystem.collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value) this.data.needEnergy += EMCSystem.collectorRecipes[name2].value;
 											}
 											this.data.validID = parseInt(name / 1000);
 											this.data.validData = parseInt(name % 1000);

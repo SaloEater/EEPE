@@ -1,9 +1,9 @@
-IDRegistry.genBlockID("energyCollectorTier2");
-Block.createBlock("energyCollectorTier2", [{
-    name: "Energy Collector МК2",
+IDRegistry.genBlockID("energyCollectorTier1");
+Block.createBlock("energyCollectorTier1", [{
+    name: "Energy Collector МК1",
     texture: [
         ["energyCollectorSide", 0],
-        ["energyCollectorTop2", 0],
+        ["energyCollectorTop1", 0],
         ["energyCollectorFront", 0],
         ["energyCollectorSide", 0],
         ["energyCollectorSide", 0],
@@ -12,11 +12,11 @@ Block.createBlock("energyCollectorTier2", [{
     inCreative: true
 }]);
 
-TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
+TileEntity.registerPrototype(BlockID.energyCollectorTier1, {
     defaultValues: {
         activeEnergy: 0,
         activeWandEnergy: 0,
-        maxEnergy: 30000,
+        maxEnergy: 10000,
 		maxWandEnergy: 0,
         sunTick: 1,
         shallMove: 0,
@@ -37,7 +37,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
     },
 	getTransportSlots: function() {
         var inputA=[], outputA=[];
-        for (i = 1; i < 13; i++) {
+        for (i = 1; i < 9; i++) {
             inputA.push("slot" + i);
             outputA.push("slot" + i);
         }
@@ -51,7 +51,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
     click: function(id, count, data, coords) {
 
     },
-    checkForTransfer: function(){
+	checkForTransfer: function(){
 		if(this.data.sidesBusied==0){
 			if (this.data.shallTransfer == 0) {
 				if (((World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCollectorTier3) && World.getTileEntity(this.x + 1, this.y, this.z).data.shallTransfer == 0) || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier1 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier2 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.antiMatterTier3 || World.getBlockID(this.x + 1, this.y, this.z) == BlockID.energyCondenser) {
@@ -95,7 +95,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 				}
 			}
 		}
-	},		
+	},	
     init: function() {
 		this.checkForTransfer();
     },
@@ -107,8 +107,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
     tick: function() {
         var mainContainer = this.container;
         if (World.getThreadTime() % 5 == 0) {
-			if (World.getThreadTime() % 5 == 0) {
-				for (i = 12; i > 0; i--) {
+			if (World.getThreadTime() % 20 == 0) {
+				for (i = 8; i > 0; i--) {
 					if (mainContainer.getSlot("slot" + i).id == 0) {
 						for (j = i - 1; j > 0; j--) {
 							if (mainContainer.getSlot("slot" + j).id != 0) {
@@ -122,7 +122,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 				}
 			}
 			this.checkForTransfer();
-            this.data.sunTick = nativeGetLightLevel(this.x, this.y + 1, this.z) / 15 * 3;
+            this.data.sunTick = nativeGetLightLevel(this.x, this.y + 1, this.z) / 15;
             if (this.data.shallTransfer == 0 || (World.getBlockID(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"])==BlockID.energyCondenser && World.getTileEntity(this.data.placeToTransfer["x"], this.data.placeToTransfer["y"], this.data.placeToTransfer["z"]).hasFreeSpace()==-1)) {
                 if (this.data.activeEnergy < this.data.maxEnergy) this.data.activeEnergy += this.data.sunTick;
 				if(mainContainer.getSlot("burnSlot").id!=0){
@@ -148,11 +148,8 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 								if (this.data.validTarget == 0) {
 									for (name in EMCSystem.collectorRecipes) {
 										if (mainContainer.getSlot("targetSlot").id == EMCSystem.collectorRecipes[name].resultid && mainContainer.getSlot("targetSlot").data == EMCSystem.collectorRecipes[name].resultdata) {
-											var found=false;
-											var lookingFor = mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data;
 											for (name2 in EMCSystem.collectorRecipes) {
-												if(name2==lookingFor && !found)found=true;
-												if (name2!=lookingFor&&found) this.data.needEnergy += EMCSystem.collectorRecipes[name2].value;
+												if (EMCSystem.collectorRecipes[name2].value >= EMCSystem.collectorRecipes[mainContainer.getSlot("burnSlot").id + "" + mainContainer.getSlot("burnSlot").data].value) this.data.needEnergy += EMCSystem.collectorRecipes[name2].value;
 											}
 											this.data.validID = parseInt(name / 1000);
 											this.data.validData = parseInt(name % 1000);
@@ -217,7 +214,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 							mainContainer.dropSlot("burnSlot", this.x, this.y+1, this.z);
 						}
 						if (this.data.shallMove == 1 || mainContainer.getSlot("afterBurnSlot").count == 64 || mainContainer.getSlot("burnSlot").id == 0) {
-							for (i = 1; i < 13; i++) {
+							for (i = 1; i < 9; i++) {
 								if (mainContainer.getSlot("slot" + i).id == mainContainer.getSlot("afterBurnSlot").id && mainContainer.getSlot("slot" + i).data == mainContainer.getSlot("afterBurnSlot").data && mainContainer.getSlot("slot" + i) < 64) {
 									if (mainContainer.getSlot("slot" + i).count + mainContainer.getSlot("afterBurnSlot").count <= 64) {
 										mainContainer.getSlot("slot" + i).count += mainContainer.getSlot("afterBurnSlot").count;
@@ -237,11 +234,11 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 							mainContainer.validateSlot("afterBurnSlot");
 							this.data.shallMove = 0;
 						}
-						if (mainContainer.getSlot("burnSlot").id == 0 && mainContainer.getSlot("slot12").id != 0 && EMCSystem.collectorRecipes[mainContainer.getSlot("slot12").id + "" + mainContainer.getSlot("slot12").data] != undefined) {
-							mainContainer.getSlot("burnSlot").id = mainContainer.getSlot("slot12").id;
-							mainContainer.getSlot("burnSlot").data = mainContainer.getSlot("slot12").data;
-							mainContainer.getSlot("burnSlot").count = mainContainer.getSlot("slot12").count;
-							mainContainer.clearSlot("slot12");
+						if (mainContainer.getSlot("burnSlot").id == 0 && mainContainer.getSlot("slot8").id != 0 && EMCSystem.collectorRecipes[mainContainer.getSlot("slot8").id + "" + mainContainer.getSlot("slot8").data] != undefined) {
+							mainContainer.getSlot("burnSlot").id = mainContainer.getSlot("slot8").id;
+							mainContainer.getSlot("burnSlot").data = mainContainer.getSlot("slot8").data;
+							mainContainer.getSlot("burnSlot").count = mainContainer.getSlot("slot8").count;
+							mainContainer.clearSlot("slot8");
 						}
 					}
 				} else {
@@ -258,6 +255,7 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
 					this.data.activeEnergy+=this.data.sunTick;
 					center.data.activeEnergy+=this.data.sunTick*2>this.data.activeEnergy?this.data.activeEnergy:this.data.sunTick*2;
 					this.data.activeEnergy-=this.data.sunTick*2>this.data.activeEnergy?this.data.activeEnergy:this.data.sunTick*2;
+					//center.data.activeEnergy+=this.data.sunTick;
 				}
             }
             mainContainer.setScale("energy", this.data.maxEnergy==0?0:this.data.activeEnergy / this.data.maxEnergy);
@@ -265,21 +263,21 @@ TileEntity.registerPrototype(BlockID.energyCollectorTier2, {
             mainContainer.setScale("wandEnergy",  this.data.maxEnergy==0?0:this.data.activeWandEnergy / this.data.maxEnergy);
             mainContainer.setText("wandEnergyValue", this.data.maxEnergy==0?parseInt(this.data.needEnergy):parseInt(this.data.activeWandEnergy));
             mainContainer.setScale("burnScale", this.data.needEnergy == 0 ? 0 : this.data.activeEnergy / this.data.needEnergy);
-            mainContainer.setScale("lightLevel", this.data.sunTick);
+            mainContainer.setScale("lightLevel", this.data.sunTick)
         }
     },
     getGuiScreen: function() {
-        return energyCollectorUIT2;
+        return energyCollectorUIT1;
     },
 
 });
 
-var energyCollectorUIT2 = new UI.StandartWindow();
-energyCollectorUIT2.setContent({
+var energyCollectorUIT1 = new UI.StandartWindow();
+energyCollectorUIT1.setContent({
     standart: {
         header: {
             text: {
-                text: "Собиратель энергии МК2"
+                text: "Собиратель энергии МК1"
             },
             color: android.graphics.Color.rgb(0x47, 0x26, 0x0c)
         },
@@ -303,7 +301,7 @@ energyCollectorUIT2.setContent({
     elements: {
         "lightLevel": {
             type: "scale",
-            x: 788+32,
+            x: 788+24,
             y: 180,
             direction: 1,
             bitmap: "collectorSunOn",
@@ -381,87 +379,59 @@ energyCollectorUIT2.setContent({
             height: 30,
             text: ""
         },
-		"slot1": {
+        "slot1": {
             type: "slot",
-            x: 354+32,
+            x: 418+32,
             y: 82,
             size: 62,
             bitmap: "collectorSlot1"
         },
         "slot2": {
             type: "slot",
-            x: 418+32,
-            y: 82,
-            size: 62,
-            bitmap: "collectorSlot1"
-        },
-        "slot3": {
-            type: "slot",
             x: 482+32,
             y: 82,
             size: 62,
             bitmap: "collectorSlot2"
         },
-		"slot4": {
-            type: "slot",
-            x: 354+32,
-            y: 146,
-            size: 62,
-            bitmap: "collectorSlot1"
-        },
-        "slot5": {
+        "slot3": {
             type: "slot",
             x: 418+32,
             y: 146,
             size: 62,
             bitmap: "collectorSlot3"
         },
-        "slot6": {
+        "slot4": {
             type: "slot",
             x: 482+32,
             y: 146,
             size: 62,
             bitmap: "collectorSlot4"
         },
-		"slot7": {
-            type: "slot",
-            x: 354+32,
-            y: 210,
-            size: 62,
-            bitmap: "collectorSlot1"
-        },
-        "slot8": {
+        "slot5": {
             type: "slot",
             x: 418+32,
             y: 210,
             size: 62,
             bitmap: "collectorSlot5"
         },
-        "slot9": {
+        "slot6": {
             type: "slot",
             x: 482+32,
             y: 210,
             size: 62,
             bitmap: "collectorSlot6"
         },
-		"slot10": {
-            type: "slot",
-            x: 354+32,
-            y: 274,
-            size: 62,
-            bitmap: "collectorSlot1"
-        },
-        "slot11": {
+        "slot7": {
             type: "slot",
             x: 418+32,
-            y: 274,
+            y: 270,
             size: 62,
             bitmap: "collectorSlot1"
         },
-        "slot12": {
+        "slot8": {
             type: "slot",
             x: 482+32,
-            y: 274,
+            y: 270,
             size: 62,
             bitmap: "collectorSlot8"
         }
