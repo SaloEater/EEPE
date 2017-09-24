@@ -14,8 +14,7 @@ ToolAPI.registerBlockMaterial(BlockID.mobiusFuelBlock, "stone", 2);
 ToolAPI.registerBlockMaterial(BlockID.aeternalisFuelBlock, "stone", 2);
 
 Callback.addCallback("LevelLoaded", function() {
-	Game.dialogMessage(FileTools.moddir);
-    minimumHeight = UI.getScreenHeight() + EMCSystem.EMCForItems.length * (listSlotScale + listSlotSpace);
+    minimumHeight = UI.getScreenHeight() + EMCSystem.EMCForItems.length * (listSlotScale + listSlotSpace); // Ну ало, фикс ми
     screensize = ModAPI.requireGlobal("GuiUtils.GetDisplaySize()");
 });
 

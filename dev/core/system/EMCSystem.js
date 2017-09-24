@@ -7,7 +7,7 @@ var EMCSystem = {
 	},
 	
 	setGlobalEMCValue: function(value){
-		this.globalEMCValue=value;
+		this.globalEMCValue=value?value:0;
 	},
 	
 	addToGlobalEMCValue: function(value){
@@ -55,6 +55,14 @@ var EMCSystem = {
 			resultdata: 0,
 		},
 	},
+
+getRecipe: function(name){
+return this.collectorRecipes[name];
+},
+
+getRecipes: function(){
+return this.collectorRecipes; 
+},
 	
 	EMCForItems: [
 	
@@ -70,7 +78,7 @@ var EMCSystem = {
 	},
 	
 	setLearnedItems: function(learnedItems){
-		this.learnedItems=learnedItems;
+		this.learnedItems=learnedItems?learnedItems:[];
 	},
 	
 	addToLearnedItems: function(element){
@@ -144,10 +152,8 @@ var EMCSystem = {
         this.addItem(BlockID.energyCollectorTier1, 0, 82953);
         //energyCondenser
         this.addItem(BlockID.energyCondenser, 0, 42011);
-        //energyCondenser
-        this.addItem(BlockID.energyCondenser, 0, 42011);
         //TransmutationTable
-        this.addItem(BlockID.TransmutationTable, 0, 42011);
+        this.addItem(BlockID.TransmutationTable, 0, 260);
         //Low Covalence
         this.addItem(ItemID.lowCovalenceDust, 0, 1);
         //Medium Covalence

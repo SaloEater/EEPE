@@ -3,7 +3,8 @@ Item.createItem("einStar", "Star I", {
     name: "klein_star",
     meta: 1
 }, {
-    stack: 1
+    stack: 1,
+	isTech: true
 });
 Translation.addTranslation("Star I", {
     ru: "Звезда I"
@@ -14,7 +15,8 @@ Item.createItem("zweiStar", "Star II", {
     name: "klein_star",
     meta: 2
 }, {
-    stack: 1
+    stack: 1,
+	isTech: true
 });
 Translation.addTranslation("Star II", {
     ru: "Звезда II"
@@ -25,7 +27,8 @@ Item.createItem("dreiStar", "Star III", {
     name: "klein_star",
     meta: 3
 }, {
-    stack: 1
+    stack: 1,
+	isTech: true
 });
 Translation.addTranslation("Star III", {
     ru: "Звезда III"
@@ -36,7 +39,8 @@ Item.createItem("vierStar", "Star IV", {
     name: "klein_star",
     meta: 4
 }, {
-    stack: 1
+    stack: 1,
+	isTech: true
 });
 Translation.addTranslation("Star IV", {
     ru: "Звезда IV"
@@ -47,7 +51,8 @@ Item.createItem("sphereStar", "Star Sphere", {
     name: "klein_star",
     meta: 5
 }, {
-    stack: 1
+    stack: 1,
+	isTech: true
 });
 Translation.addTranslation("Star Sphere", {
     ru: "Звезда Сфера"
@@ -58,7 +63,8 @@ Item.createItem("omegaStar", "Star Omega", {
     name: "klein_star",
     meta: 6
 }, {
-    stack: 1
+    stack: 1,
+	isTech: true
 });
 Translation.addTranslation("Star Omega", {
     ru: "Звезда Омега"

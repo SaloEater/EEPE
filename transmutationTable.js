@@ -1,23 +1,11 @@
 Callback.addCallback("ItemUse", function(coords, item, block) {
-	if(block.id==BlockID.TransmutationTable)updateAvailableItems(World.getTileEntity(coords.x, coords.y, coords.z).container, activeFirstIndex);
-});
-
-Callback.addCallback("NativeCommand", function(command){
-Game.message(command);
-	var splitted = command.split(" ");
-	if (splitted.shift() == "eereset"){
-		EMCSystem.setGlobalEMCValue(0);
-	}
+	if(block.id==BlockID.TransmutationTable)updateAvailableItems(World.getTileEntity(coords.x, coords.y, coords.z).container);
 });
 
 
 var TransmutationTableUI=null;
-var pageLimit = 21;
-var activeFirstIndex = 0;
-
-Callback.addCallback("LevelLoaded", function() {
-	activeFirstIndex = 0;
-});
+var pageLimit = 46;
+var activePage = 1;
 
 Callback.addCallback("PostLoaded", function() {
 	
@@ -36,7 +24,7 @@ Callback.addCallback("PostLoaded", function() {
 			background: {
 				color: android.graphics.Color.rgb(0x198, 0x198, 0x198)
 			},
-			minHeight: 1480*2+95
+			minHeight: 1480*2+1480/6+100
 		},
 		params: {
 			textures: {},
@@ -132,7 +120,7 @@ Callback.addCallback("PostLoaded", function() {
 						if (tTSlotYSelected) {
 							clearAdditionalButtons(container);
 						}
-						updateAvailableItems(container, activeFirstIndex);
+						updateAvailableItems(container);
 					}
 				}
 			},
@@ -188,11 +176,9 @@ function updateAvailableItems(anotherContainer, first) {
 			anotherContainer.getGuiContent().elements[name] = null;
 		}
 	}
-	var i=first;
-var addedCounter=0;
-	for(i = first; addedCounter<=pageLimit; i++){
-		if(!EMCSystem.getLearnedItems()[i])break;
-		var itemLocal = EMCSystem.getLearnedItems()[i];
+	var i;
+	for(i = first, i<first+pageLimit; i++){
+		var itemLocal = EMCForItems.getLearnedItems()[i];
 		var emcValue = getEMC(itemLocal["id"], itemLocal["data"]);
         if (EMCSystem.getGlobalEMCValue() / emcValue >= 1) {
             var slot = {
@@ -228,11 +214,11 @@ var addedCounter=0;
                         }
                         container.getGuiContent().elements["buttonMinus"] = {
                             type: "button",
-                            x: 365-30,//localX - 59.5 * 2,
+                            x: localX - 59.5 * 2,
                             y: localY,
                             bitmap: "buttonMinusOff",
                             bitmap2: "buttonMinusOn",
-                            scale: 1.5,//3.4,
+                            scale: 3.4,
                             clicker: {
                                 onClick: function(container, tileEntity) {
                                     if (activeItemCount > 1 && !kleinStarController.isStar(localId)) activeItemCount--;
@@ -241,22 +227,6 @@ var addedCounter=0;
                             }
                         };
 
-
-                        container.getGuiContent().elements["buttonPlus"] = {
-                            type: "button",
-                            x: 365-30,
-                            y: localY+25,
-                            bitmap: "buttonPlusOff",
-                            bitmap2: "buttonPlusOn",
-                            scale: 1.5,
-                            clicker: {
-                                onClick: function(container, tileEntity) {
-                                    if (activeItemCount < maxActiveItemCount && !kleinStarController.isStar(localId)) activeItemCount++;
-                                    container.setText("currentAmountForItem", "Выбрано: " + activeItemCount);
-                                }
-                            }
-                        };
-						
                         container.getGuiContent().elements["currentAmountForItem"] = {
                             type: "text",
                             x: 365,
@@ -273,6 +243,21 @@ var addedCounter=0;
                             width: 185,
                             height: 35,
                             text: "Максимум: " + maxActiveItemCount
+                        };
+
+                        container.getGuiContent().elements["buttonPlus"] = {
+                            type: "button",
+                            x: localX - 59.5,
+                            y: localY,
+                            bitmap: "buttonPlusOff",
+                            bitmap2: "buttonPlusOn",
+                            scale: 3.4,
+                            clicker: {
+                                onClick: function(container, tileEntity) {
+                                    if (activeItemCount < maxActiveItemCount && !kleinStarController.isStar(localId)) activeItemCount++;
+                                    container.setText("currentAmountForItem", "Выбрано: " + activeItemCount);
+                                }
+                            }
                         };
 
                         container.getGuiContent().elements["getAmount"] = {
@@ -308,7 +293,7 @@ var addedCounter=0;
 										
 									}
 									clearAdditionalButtons(container);
-									updateAvailableItems(container, activeFirstIndex);
+									updateAvailableItems(container);
                                 }
                             }
                         };
@@ -335,44 +320,40 @@ var addedCounter=0;
             };
             anotherContainer.getGuiContent().elements["slotOn" + posYForSlot] = slot;
             posYForSlot += (listSlotScale + listSlotSpace);
-addedCounter++;
         }
-	};
-	if(addedCounter>pageLimit&&EMCSystem.getLearnedItems()[i]){
+	}
+	if(i==first+pageLimit){
 		anotherContainer.getGuiContent().elements["buttonForward"] = {
 			type: "button",
-			x: 865,
+			x: 665,
 			y: posYForSlot,
-			bitmap: "buttonForwardOff",
-			bitmap2: "buttonForwardOn",
+			bitmap: "buttonValue",
 			scale: 3.4,
 			clicker: {
 				onClick: function(container, tileEntity) {
-					activeFirstIndex=i;
 					clearAdditionalButtons(anotherContainer);
-					updateAvailableItems(anotherContainer, activeFirstIndex);
+					updateAvailableItems(anotherContainer, i);
+					activePage++;
 				}
 			}
 		}
 	}
-	if(activeFirstIndex>=pageLimit){
-		anotherContainer.getGuiContent().elements["buttonBackward"] = {
+	if(activePage>1){
+		anotherContainer.getGuiContent().elements["buttonForward"] = {
 			type: "button",
-			x: 365,
+			x: 565,
 			y: posYForSlot,
-			bitmap: "buttonBackwardOff",
-			bitmap2: "buttonBackwardOn",
+			bitmap: "buttonValue",
 			scale: 3.4,
 			clicker: {
 				onClick: function(container, tileEntity) {
-					activeFirstIndex-=pageLimit;
 					clearAdditionalButtons(anotherContainer);
-					updateAvailableItems(anotherContainer, activeFirstIndex);
+					updateAvailableItems(anotherContainer, i-pageLimit);
+					activePage--;
 				}
 			}
 		}
 	}
-	//Game.dialogMessage(i+"-"+pageLimit, "i");
     /*EMCSystem.getLearnedItems().forEach(function(itemLocal, iLocal, arrLocal) {
 		var emcValue = getEMC(itemLocal["id"], itemLocal["data"]);
         if (EMCSystem.getGlobalEMCValue() / emcValue >= 1) {
@@ -535,7 +516,6 @@ function clearAdditionalButtons(container) {
     container.getGuiContent().elements["getAmount"] = null;
     container.getGuiContent().elements["setMaxAmount"] = null;
 	container.getGuiContent().elements["buttonForward"] = null;
-	container.getGuiContent().elements["buttonBackward"] = null;
     container.applyChanges();
     tTSlotYSelected = false;
 }
@@ -572,7 +552,7 @@ TileEntity.registerPrototype(BlockID.TransmutationTable, {
                     addedValue = true;
 					
 					clearAdditionalButtons(this.container);
-					updateAvailableItems(this.container, activeFirstIndex);
+					updateAvailableItems(this.container);
 					
 					this.data.starPlaced = 1;
                 }
@@ -584,15 +564,14 @@ TileEntity.registerPrototype(BlockID.TransmutationTable, {
 						kleinStarController.addEMC(this.data.wandData, deltaEMC > EMCSystem.getGlobalEMCValue() ? EMCSystem.getGlobalEMCValue() : deltaEMC);
 						EMCSystem.removeFromGlobalEMCValue(deltaEMC > EMCSystem.getGlobalEMCValue() ? EMCSystem.getGlobalEMCValue() : deltaEMC);
 					}
-					activeFirstIndex=0;
 					clearAdditionalButtons(this.container);
-					updateAvailableItems(this.container, activeFirstIndex);
+					updateAvailableItems(this.container);
 					//Game.dialogMessage("Remove EMC");
                 }
                 this.container.setText("EMCValue", "ЕМС в системе:  " + EMCSystem.getGlobalEMCValue());
                 if (tTGuiFirstUpdate) {
                     tTGuiFirstUpdate = false;
-                    updateAvailableItems(this.container, activeFirstIndex);
+                    updateAvailableItems(this.container);
                 }
                 if (!addedValue && this.container.getSlot("burnSlot").id != 0) {
                     var emcValue = getEMC(this.container.getSlot("burnSlot").id, this.container.getSlot("burnSlot").data);

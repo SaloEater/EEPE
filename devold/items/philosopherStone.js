@@ -107,6 +107,7 @@ Item.registerUseFunction("philosopherStone", function(coords, item, block) {
 
         }
     }
+	
 });
 
 Callback.addCallback("EntityHurt", function(who, whom, damage) {
@@ -123,69 +124,35 @@ Callback.addCallback("EntityHurt", function(who, whom, damage) {
 
 function phStoneButtons(type) {
     if (type == 1) {
-        var ctx = UI.getMcContext();
-        UI.run(function() {
-            var layout = new android.widget.LinearLayout(ctx);
-            layout.setOrientation(1);
-            var directory = new android.graphics.Bitmap.createScaledBitmap(new android.graphics.BitmapFactory.decodeFile("/sdcard/windows/BstSharedFolder/EEPE/gui/buttonCraft.png"), screensize[0] / 20, screensize[0] / 20, true);
-            var img = new android.graphics.drawable.BitmapDrawable(directory);
-            var image = new android.widget.ImageView(ctx);
-            image.setImageBitmap(directory);
-            image.setOnClickListener(new android.view.View.OnClickListener({
-                onClick: function(viewarg) {
-                    Game.message("Open table");
-                    ModAPI.requireGlobal("WorkbenchPocketStyle.openUI()");
-                }
-            }));
-            layout.addView(image);
-            GUI1 = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-            GUI1.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.RED));
-            GUI1.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.TOP, 0, 0);
-
-            /*var layout2 = new android.widget.LinearLayout(ctx);
-            layout2.setOrientation(1);
-            var directory2 = PhStoneMobChangeButtonState == 0 ? new android.graphics.Bitmap.createScaledBitmap(new android.graphics.BitmapFactory.decodeFile("/sdcard/windows/BstSharedFolder/EEPE/gui/buttonMobChangeOff.png"), screensize[0] / 20, screensize[0] / 20, true) : new android.graphics.Bitmap.createScaledBitmap(new android.graphics.BitmapFactory.decodeFile("/sdcard/windows/BstSharedFolder/EEPE/gui/buttonMobChangeOn.png"), screensize[0] / 20, screensize[0] / 20, true);
-            var img2 = new android.graphics.drawable.BitmapDrawable(directory);
-            var image2 = new android.widget.ImageView(ctx);
-            image2.setImageBitmap(directory2);
-            image2.setOnClickListener(new android.view.View.OnClickListener({
-                onClick: function(viewarg) {
-                    Game.message("Looking for mob");
-					var mob = Player.getPointed().entity;
-					Game.message(mob);
-					if(mob){
-						var newID=isHostile(mob);
-						var coords = Entity.getPosition(mob);
-						Game.message(JSON.stringify(coords));
+		if(!GUI1){
+			Game.message("Show C");
+			var ctx = UI.getMcContext();
+			UI.run(function() {
+				var layout = new android.widget.LinearLayout(ctx);
+				layout.setOrientation(1);
+				var directory = new android.graphics.Bitmap.createScaledBitmap(new android.graphics.BitmapFactory.decodeFile("/sdcard/games/com.mojang/mods/EEPE/gui/buttonCraft.png"), screensize[0] / 20, screensize[0] / 20, true);
+				var img = new android.graphics.drawable.BitmapDrawable(directory);
+				var image = new android.widget.ImageView(ctx);
+				image.setImageBitmap(directory);
+				image.setOnClickListener(new android.view.View.OnClickListener({
+					onClick: function(viewarg) {
+						ModAPI.requireGlobal("WorkbenchPocketStyle.openUI()");
 					}
-					//for(n in Player.getPointed().entity)Game.message(n);
-					
-					Game.message(mob);
-                    if(mob!=null){
-						var newID=isHostile(mob);
-						var coords = Entity.getPosition(mob);
-						Game.message(newID);
-						Entity.spawn(coords.x, coords.y, coords.z, newID);
-						Entity.remove(mob);
-					}
-                }
-            }));
-            layout2.addView(image2);
-            GUI2 = new android.widget.PopupWindow(layout2, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-            GUI2.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.RED));
-            GUI2.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.TOP, 0, screensize[0] / 20);*/
-        });
+				}));
+				layout.addView(image);
+				GUI1 = new android.widget.PopupWindow(layout, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+				GUI1.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.RED));
+				GUI1.showAtLocation(ctx.getWindow().getDecorView(), android.view.Gravity.RIGHT | android.view.Gravity.TOP, 0, 0);
+			});
+		}
     } else {
-        UI.run(function() {
-            if (GUI1 != null) {
-                GUI1.dismiss();
-                GUI1 = null;
-            }
-            /*if (GUI2 != null) {
-                GUI2.dismiss();
-                GUI2 = null;
-            }*/
-        });
+		if(GUI1){
+			Game.message("Clear C");
+			UI.run(function() {
+				GUI1.dismiss();
+				GUI1 = null;
+			});
+		}
     }
 }
 
@@ -209,29 +176,21 @@ function getNewID(mob){
 }
 
 Callback.addCallback("tick", function() {
-    if (Player.getCarriedItem().id == ItemID.philosopherStone && !handCheckerPS && allowedPSButtons) {
-        //Game.message("Open GUI");
+	if(World.getThreadTime()%5==0&&lastCoords.x&&World.getTileEntity(lastCoords.x, lastCoords.y, lastCoords.z)&&World.getTileEntity(lastCoords.x, lastCoords.y, lastCoords.z).container&& World.getTileEntity(lastCoords.x, lastCoords.y, lastCoords.z).container.isOpened() ){
+		allowPSButtons=2;
+	} else if(allowPSButtons!=1){
+		allowPSButtons=0;
+	}
+    if (Player.getCarriedItem().id == ItemID.philosopherStone && allowPSButtons==0) {
         phStoneButtons(1);
-        handCheckerPS = true;
-    } else if (handCheckerPS || !allowedPSButtons) {
-        //Game.message("Close GUI");
+    } else if (Player.getCarriedItem().id != ItemID.philosopherStone || allowPSButtons!=0) {
         phStoneButtons(2);
-        handCheckerPS = false;
-    }
-	 if (World.getThreadTime() % 10 == 0) {
-        if (lastCoords.x != undefined) {
-            if (World.getTileEntity(lastCoords.x, lastCoords.y, lastCoords.z) == undefined || World.getTileEntity(lastCoords.x, lastCoords.y, lastCoords.z).container == undefined || !World.getTileEntity(lastCoords.x, lastCoords.y, lastCoords.z).container.isOpened()) {
-				if(allowedPSButtons)allowedPSButtons=false;
-            } else {
-				allowedPSButtons=true;
-			}
-        } 
     }
 });
 
 Callback.addCallback("NativeGuiChanged", function(screenName) {
-	allowedPSButtons=false;
+	allowPSButtons=1;
     if (screenName == "hud_screen" || screenName == "in_game_play_screen") {
-		allowedPSButtons=true;
+		allowPSButtons=0;
     }
 });

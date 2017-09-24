@@ -22,6 +22,8 @@ TileEntity.registerPrototype(BlockID.energyCondenser, {
         itemInSlotData: 0,
         itemInSlotValue: 0,
 		sidesBusied: 0,
+		activeSlot: 0,
+		haveSpace: true
     },
     created: function() {
 
@@ -41,7 +43,8 @@ TileEntity.registerPrototype(BlockID.energyCondenser, {
         };
     },
     tick: function() {
-        if (World.getThreadTime() % 2 == 0) {
+        //if (World.getThreadTime() % 2 == 0) {
+			if (World.getThreadTime() % 5 == 0)this.hasFreeSpace_();
             var mainSlot = this.container.getSlot("mainSlot");
             if (mainSlot.id > 0) {
                 if (mainSlot.id != this.data.itemInSlotId || mainSlot.data != this.data.itemInSlotData) {
@@ -50,7 +53,6 @@ TileEntity.registerPrototype(BlockID.energyCondenser, {
                         this.data.itemInSlotId = mainSlot.id;
                         this.data.itemInSlotData = mainSlot.data;
                         this.data.itemInSlotValue = localEMC;
-                        //Game.dialogMessage(this.data.itemInSlotId + ":" + this.data.itemInSlotData + ":" + this.data.itemInSlotValue);
                     }
                 }
             } else {
@@ -73,17 +75,18 @@ TileEntity.registerPrototype(BlockID.energyCondenser, {
                         }
                     }
                 } else {
-                    this.data.activeEnergy -= this.data.itemInSlotValue;
                     for (i = 1; i < 82; i++) {
-                        if (this.container.getSlot("slot" + i).id == this.data.itemInSlotId || this.container.getSlot("slot" + i).id < 1) {
+                        if (this.container.getSlot("slot" + i).id == this.data.itemInSlotId || this.container.getSlot("slot" + i).id ==0) {
                             if (this.container.getSlot("slot" + i).count == 0) {
                                 this.container.getSlot("slot" + i).id = this.data.itemInSlotId;
                                 this.container.getSlot("slot" + i).data = this.data.itemInSlotData;
                                 this.container.getSlot("slot" + i).count = 1;
-                            } else if (this.container.getSlot("slot" + i).count == 64) {
+								this.data.activeEnergy -= this.data.itemInSlotValue;
+                            } else if (this.container.getSlot("slot" + i).count == Item.getMaxStack(this.data.itemInSlotId)) {
                                 continue;
                             } else {
                                 this.container.getSlot("slot" + i).count++;
+								this.data.activeEnergy -= this.data.itemInSlotValue;
                             }
                             this.container.applyChanges();
                             break;
@@ -93,16 +96,22 @@ TileEntity.registerPrototype(BlockID.energyCondenser, {
                 this.container.setScale("energyBarScale", this.data.activeEnergy / this.data.itemInSlotValue);
                 this.container.setText("emcValue", parseInt(this.data.activeEnergy) + "/" + parseInt(this.data.itemInSlotValue));
             }
-        }
+       // }
     },
 	hasFreeSpace: function(){
+		return this.data.haveSpace;
+	},
+	hasFreeSpace_: function(){
+		if(this.data.activeEnergy>this.data.itemInSlotValue){
+this.data.haveSpace=false;
+return}
 		for (i = 1; i < 82; i++) {
-			if((this.container.getSlot("slot"+i).id==0 || (this.container.getSlot("slot"+i).id==this.data.itemInSlotId && this.container.getSlot("slot"+i)<64))){
-				//if(World.getThreadTime()%40==0)Game.dialogMessage(getEMC(this.data.itemInSlotId, this.data.itemInSlotData));
-				return getEMC(this.data.itemInSlotId, this.data.itemInSlotData);
+			if((this.container.getSlot("slot"+i).id==0 || (this.container.getSlot("slot"+i).id==this.data.itemInSlotId && this.container.getSlot("slot"+i)<Item.getMaxStack(this.data.itemInSlotId)))){
+				this.data.haveSpace=true;
+return;
 			}
 		}
-		return -1;
+		this.data.haveSpace=false;
 	},
     getGuiScreen: function() {
         return energyCondenserUI;
@@ -129,7 +138,7 @@ energyCondenserUI.setContent({
     },
     drawing: [{
             type: "background",
-            color: 0
+            color: android.graphics.Color.rgb(0x198, 0x198, 0x198)
         },
         //{type: "frame", x: 357, y: 32, width: listSlotSpace*7+16*8*4+16, height: listSlotSpace+15*4*11+24, bitmap: "condenserFrame", scale: 2, bg: android.graphics.Color.rgb(0x153, 0x153, 0x152)},
         {
